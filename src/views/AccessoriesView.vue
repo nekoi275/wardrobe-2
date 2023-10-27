@@ -16,9 +16,9 @@ onMounted(() => {
       { name: 'year', displayName: 'YEAR' }
     ],
     rows: [
-      { type: 'accessory', color: '#c8b273', description: 'zz', price: 123, year: 2023, id: 'zz123', image: '' },
-      { type: 'accessory', color: '#c8b273', description: 'zz', price: 123, year: 2023, id: 'zz123', image: '' },
-      { type: 'accessory', color: '#c8b273', description: 'zz', price: 123, year: 2023, id: 'zz123', image: '' }
+      { type: '1accessory', color: '#c8b273', description: 'zz', price: 123, year: 2023, id: 'zz123', image: '' },
+      { type: '6accessory', color: '#c8b273', description: 'zz', price: 123, year: 2023, id: 'zz123', image: '' },
+      { type: '9accessory', color: '#c8b273', description: 'zz', price: 123, year: 2023, id: 'zz123', image: '' }
     ]
   }
 })

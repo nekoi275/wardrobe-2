@@ -10,8 +10,17 @@ const store = useTableStore()
 // a computed ref
 
 // functions that mutate state and trigger updates
-function sort(header: string) {
-  return header
+function setSorting(field: string) {
+  if (store.sorting.field == field) {
+    store.sorting = {field: field, isAscending: !store.sorting.isAscending}
+  } else {
+    store.sorting = {field: field, isAscending: true}
+  }
+  return field
+}
+function sort(field: string) {
+  setSorting(field);
+  store.sort();
 }
 function openImageModal(row: {}) {
   return row
@@ -38,7 +47,7 @@ onMounted(() => {})
           {{ header.displayName }}
         </div>
       </th>
-      <th></th>
+      <th class="empty-th"></th>
     </thead>
     <tbody>
       <tr v-for="row in store.current.rows" :key="row.id">
@@ -78,6 +87,10 @@ thead {
 thead th {
   padding: 15px;
   cursor: pointer;
+}
+
+th.empty-th {
+  cursor: default;
 }
 
 tbody tr {

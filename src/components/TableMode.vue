@@ -42,10 +42,12 @@ onMounted(() => {})
 <template>
   <table>
     <thead>
-      <th v-for="header in store.current.headers" :key="header.name">
-        <div @click="sort(header.name)">
+      <th v-for="header in store.current.headers" :key="header.name" @click="sort(header.name)">
+        <span>
           {{ header.displayName }}
-        </div>
+        </span>
+        <v-icon v-show="store.sorting.field == header.name && store.sorting.isAscending" name="fa-angle-up" />
+        <v-icon v-show="store.sorting.field == header.name && !store.sorting.isAscending" name="fa-angle-down" />
       </th>
       <th class="empty-th"></th>
     </thead>
@@ -58,10 +60,10 @@ onMounted(() => {})
         <td>{{ row.year }}</td>
         <td v-if="row.season">{{ row.season }}</td>
         <td>
-          <span class="photo" @click="openImageModal(row.image)">image</span>
-          <span class="edit" @click="openModal(row)">edit</span>
-          <span class="remove" @click="remove(row)">remove</span>
-          <span class="move" @click="moveToOld(row)">move</span>
+          <v-icon name="fa-image" @click="openImageModal(row.image)"/>
+          <v-icon name="fa-edit" @click="openModal(row)"/>
+          <v-icon name="fa-trash-alt" @click="remove(row)"/>
+          <v-icon name="fa-share-square" @click="moveToOld(row)"/>
         </td>
       </tr>
     </tbody>
@@ -103,8 +105,7 @@ tbody tr:hover {
 tbody tr td {
   padding: 10px;
 }
-span {
-  display: inline-block;
+.ov-icon {
   margin-left: 10px;
   cursor: pointer;
 }

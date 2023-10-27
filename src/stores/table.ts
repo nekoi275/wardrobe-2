@@ -17,7 +17,7 @@ interface ClothesInfo {
   description: string
   price: number
   year: number
-  season: string,
+  season?: string | null
   id: string,
   image: string
 }

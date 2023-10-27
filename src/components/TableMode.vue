@@ -11,7 +11,7 @@ const store = useTableStore()
 
 // functions that mutate state and trigger updates
 function sort(header: string) {
-  return header.name
+  return header
 }
 function openImageModal(row: {}) {
   return row
@@ -47,7 +47,7 @@ onMounted(() => {})
         <td>{{ row.description }}</td>
         <td>{{ row.price }}</td>
         <td>{{ row.year }}</td>
-        <td>{{ row.season }}</td>
+        <td v-if="row.season">{{ row.season }}</td>
         <td>
           <span class="photo" @click="openImageModal(row.image)">image</span>
           <span class="edit" @click="openModal(row)">edit</span>
@@ -77,6 +77,7 @@ thead {
 }
 thead th {
   padding: 15px;
+  cursor: pointer;
 }
 
 tbody tr {

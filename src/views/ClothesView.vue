@@ -17,9 +17,9 @@ onMounted(() => {
       { name: 'season', displayName: 'SEASON' }
     ],
     rows: [
-      { type: 'type', color: 'color', description: 'zz', price: 123, year: 2023, season: 'winter', id: 'zz123', image: '' },
-      { type: 'type', color: 'color', description: 'zz', price: 123, year: 2023, season: 'winter', id: 'zz123', image: '' },
-      { type: 'type', color: 'color', description: 'zz', price: 123, year: 2023, season: 'winter', id: 'zz123', image: '' }
+      { type: 'clothes', color: '#81e6ef', description: 'zz', price: 123, year: 2023, season: 'winter', id: 'zz123', image: '' },
+      { type: 'clothes', color: '#654ee8', description: 'zz', price: 123, year: 2023, season: 'winter', id: 'zz123', image: '' },
+      { type: 'clothes', color: '#b6edde', description: 'zz', price: 123, year: 2023, season: 'winter', id: 'zz123', image: '' }
     ]
   }
 })

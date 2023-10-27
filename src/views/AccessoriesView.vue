@@ -1,10 +1,31 @@
+<script setup lang="ts">
+import TableMode from '@/components/TableMode.vue'
+import { useTableStore } from '@/stores/table'
+import { onMounted } from 'vue'
+
+const store = useTableStore()
+
+// lifecycle hooks
+onMounted(() => {
+  store.current = {
+    headers: [
+      { name: 'type', displayName: 'TYPE' },
+      { name: 'color', displayName: 'COLOR' },
+      { name: 'description', displayName: 'DESCRIPTION' },
+      { name: 'price', displayName: 'PRICE' },
+      { name: 'year', displayName: 'YEAR' }
+    ],
+    rows: [
+      { type: 'accessory', color: '#c8b273', description: 'zz', price: 123, year: 2023, id: 'zz123', image: '' },
+      { type: 'accessory', color: '#c8b273', description: 'zz', price: 123, year: 2023, id: 'zz123', image: '' },
+      { type: 'accessory', color: '#c8b273', description: 'zz', price: 123, year: 2023, id: 'zz123', image: '' }
+    ]
+  }
+})
+</script>
+
 <template>
-    <div>
-      <h1>This is accessories table</h1>
-    </div>
-  </template>
-  
-  <style>
-  
-  </style>
-  
+  <TableMode></TableMode>
+</template>
+
+<style></style>

@@ -44,6 +44,7 @@ interface ClothesInfo {
 interface Header {
   name: string
   displayName: string
+  isFilter: boolean
 }
 
 interface CurrentTable {

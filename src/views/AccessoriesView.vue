@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TableMode from '@/components/TableMode.vue'
+import SettingsSidebar from '@/components/SettingsSidebar.vue'
 import { useTableStore } from '@/stores/table'
 import { onMounted } from 'vue'
 
@@ -9,11 +10,11 @@ const store = useTableStore()
 onMounted(() => {
   store.current = {
     headers: [
-      { name: 'type', displayName: 'TYPE' },
-      { name: 'color', displayName: 'COLOR' },
-      { name: 'description', displayName: 'DESCRIPTION' },
-      { name: 'price', displayName: 'PRICE' },
-      { name: 'year', displayName: 'YEAR' }
+      { name: 'type', displayName: 'TYPE', isFilter: true },
+      { name: 'color', displayName: 'COLOR', isFilter: true },
+      { name: 'description', displayName: 'DESCRIPTION', isFilter: false },
+      { name: 'price', displayName: 'PRICE', isFilter: false },
+      { name: 'year', displayName: 'YEAR', isFilter: true }
     ],
     rows: [
       { type: '1accessory', color: '#c8b273', description: 'zz', price: 123, year: 2023, id: 'zz123', image: '' },
@@ -25,6 +26,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <SettingsSidebar></SettingsSidebar>
   <TableMode></TableMode>
 </template>
 

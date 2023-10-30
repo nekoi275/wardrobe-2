@@ -56,3 +56,22 @@ a {
   margin: 0 auto;
   padding-top: 70px;
 }
+
+button {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  border: 3px solid transparent;
+  border-radius: 3px;
+  padding: 10px;
+  margin: 10px auto;
+  cursor: pointer;
+  color: var(--text-light-color);
+  transition: 0.3s ease all;
+  text-align: center;
+  background-color: var(--main-dark-color);
+}
+button:hover {
+  background-color: var(--main-light-color);
+  border: 3px solid var(--main-dark-color);
+}

@@ -2,12 +2,12 @@
 import TableMode from '@/components/TableMode.vue'
 import SettingsSidebar from '@/components/SettingsSidebar.vue'
 import { useTableStore } from '@/stores/table'
-import { onMounted } from 'vue'
+import { onBeforeMount } from 'vue'
 
 const store = useTableStore()
 
 // lifecycle hooks
-onMounted(() => {
+onBeforeMount(() => {
   store.current = {
     headers: [
       { name: 'type', displayName: 'TYPE', isFilter: true },

@@ -10,12 +10,16 @@ const tableStore = useTableStore()
 // reactive (ref) state
 
 // a computed ref
+const availableFilters = computed(() => {
+  return tableStore.current.headers.filter((h) => h.isFilter === true)
+})
+//const availableOptions = computed(() => {})
 
 // functions that mutate state and trigger updates
 function removeFilters() {}
 function openSidebar() {
   console.log('wtf')
-  store.isOpen = true;
+  store.isOpen = true
 }
 function closeSidebar() {
   console.log('called')
@@ -28,7 +32,13 @@ onMounted(() => {})
 
 <template>
   <aside :class="{ open: store.isOpen }" v-click-outside="closeSidebar">
-    <v-icon name="fa-filter" @click="openSidebar()"/>
+    <v-icon name="fa-filter" @click="openSidebar()" />
+    <div v-for="filter in availableFilters" :key="filter.name">
+      <span>{{ filter.displayName }}</span>
+      <select multiple>
+        <option>zz</option>
+      </select>
+    </div>
     <button @click="removeFilters()">Reset</button>
   </aside>
 </template>
@@ -46,6 +56,7 @@ aside {
   background-color: var(--text-light-color);
   border-right: 1px solid var(--main-dark-color);
   text-align: center;
+  padding: 0px 40px;
 }
 .open {
   transform: none;
@@ -53,8 +64,17 @@ aside {
 .ov-icon {
   display: block;
   margin-top: 20px;
-  margin-left: 170px;
+  margin-left: 130px;
   cursor: pointer;
 }
-
+span {
+  display: block;
+  margin-bottom: 10px;
+}
+select {
+  width: 100%;
+}
+option {
+  background-color: var(--main-light-color);
+}
 </style>

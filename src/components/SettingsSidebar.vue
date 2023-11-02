@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { computed } from 'vue'
 import { useSidebarStore } from '@/stores/sidebar'
 import { useTableStore } from '@/stores/table'
 
@@ -20,7 +20,9 @@ const options = computed(() => {
     result[filters.value[i].name] = []
     for (let j = 0; j < rows.length; j++) {
       let option = rows[j][filters.value[i].name]
-      result[filters.value[i].name].push(option)
+      if (!result[filters.value[i].name].includes(option)) {
+        result[filters.value[i].name].push(option)
+      }
     }
   }
   return result
@@ -36,7 +38,6 @@ function closeSidebar() {
 }
 
 // lifecycle hooks
-onMounted(() => {})
 </script>
 
 <template>
@@ -83,7 +84,13 @@ span {
 select {
   width: 100%;
 }
-option {
+option:checked {
+  background-color: var(--main-light-color);
+}
+option:focus {
+  background-color: var(--main-light-color);
+}
+option:active {
   background-color: var(--main-light-color);
 }
 </style>

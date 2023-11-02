@@ -15,9 +15,5 @@ interface View {
 }
 
 interface Filters {
-    type: []
-    color: []
-    year: []
-    season: []
+  [propName: string]: Array<any>
 }
-

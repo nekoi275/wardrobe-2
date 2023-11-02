@@ -52,7 +52,7 @@ onMounted(() => {})
       <th class="empty-th"></th>
     </thead>
     <tbody>
-      <tr v-for="row in store.current.rows" :key="row.id">
+      <tr v-for="row in store.current.rows" :key="row._id">
         <td>{{ row.type }}</td>
         <td :style="{ backgroundColor: row.color }"></td>
         <td>{{ row.description }}</td>

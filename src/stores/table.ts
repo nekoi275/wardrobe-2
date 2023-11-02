@@ -36,8 +36,9 @@ interface ClothesInfo {
   price: number
   year: number
   season?: string | null
-  id: string
-  image: string
+  _id: string
+  image: string,
+  isOld: boolean
   [propName: string]: any
 }
 

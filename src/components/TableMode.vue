@@ -58,7 +58,7 @@ onMounted(() => {})
         <td>{{ row.description }}</td>
         <td>{{ row.price }}</td>
         <td>{{ row.year }}</td>
-        <td v-if="row.season">{{ row.season }}</td>
+        <td>{{ row.season || '' }}</td>
         <td>
           <v-icon name="fa-image" @click="openImageModal(row.image)"/>
           <v-icon name="fa-edit" @click="openModal(row)"/>
@@ -76,7 +76,6 @@ table {
   border-collapse: collapse;
   text-align: center;
   box-sizing: border-box;
-  padding-top: 70px;
 }
 thead {
   background: var(--main-dark-color);

@@ -19,7 +19,7 @@ const options = computed(() => {
   for (let i = 0; i < filters.value.length; i++) {
     result[filters.value[i].name] = []
     for (let j = 0; j < rows.length; j++) {
-      let option = rows[j][filters.value[i].name]
+      let option = rows[j][filters.value[i].name] || ''
       if (!result[filters.value[i].name].includes(option)) {
         result[filters.value[i].name].push(option)
       }

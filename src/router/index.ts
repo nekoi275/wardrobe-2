@@ -1,36 +1,31 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import ClothesView from '../views/ClothesView.vue'
+import AccessoriesView from '../views/AccessoriesView.vue'
+import OldView from '../views/OldView.vue'
+import MoodboardView from '../views/MoodboardView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
       path: '/clothes',
       name: 'clothes',
-      // route level code-splitting
-      // this generates a separate chunk for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/ClothesView.vue')
+      component: ClothesView
     },
     {
       path: '/accessories',
       name: 'accessories',
-      component: () => import('../views/AccessoriesView.vue')
+      component: AccessoriesView
     },
     {
       path: '/old',
       name: 'old',
-      component: () => import('../views/OldView.vue')
+      component: OldView
     },
     {
       path: '/moodboard',
       name: 'moodboard',
-      component: () => import('../views/MoodboardView.vue')
+      component: MoodboardView
     }
   ]
 })

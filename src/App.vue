@@ -5,7 +5,6 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
   <header>
     <nav>
-      <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/clothes">Clothes</RouterLink>
       <RouterLink to="/accessories">Accessories</RouterLink>
       <RouterLink to="/moodboard">Moodboard</RouterLink>
@@ -14,7 +13,6 @@ import { RouterLink, RouterView } from 'vue-router'
   </header>
 
   <RouterView />
-
 </template>
 
 <style scoped>
@@ -35,7 +33,7 @@ nav a {
   color: var(--text-light-color);
 }
 
-a.router-link-active.router-link-exact-active{
+a.router-link-active.router-link-exact-active {
   color: var(--main-light-color);
   background-color: var(--main-dark-color);
   border-radius: 3px;

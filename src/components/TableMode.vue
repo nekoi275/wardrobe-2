@@ -1,15 +1,8 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { useTableStore } from '@/stores/table'
 
-// access the `store` variable anywhere in the component
 const store = useTableStore()
 
-// reactive (ref) state
-
-// a computed ref
-
-// functions that mutate state and trigger updates
 function setSorting(field: string) {
   if (store.sorting.field == field) {
     store.sorting = {field: field, isAscending: !store.sorting.isAscending}
@@ -34,9 +27,6 @@ function remove(row: {}) {
 function moveToOld(row: {}) {
   return row
 }
-
-// lifecycle hooks
-onMounted(() => {})
 </script>
 
 <template>

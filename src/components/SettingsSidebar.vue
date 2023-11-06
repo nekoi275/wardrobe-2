@@ -3,13 +3,9 @@ import { computed } from 'vue'
 import { useSidebarStore } from '@/stores/sidebar'
 import { useTableStore } from '@/stores/table'
 
-// access the `store` variable anywhere in the component
 const store = useSidebarStore()
 const tableStore = useTableStore()
 
-// reactive (ref) state
-
-// a computed ref
 const filters = computed(() => {
   return tableStore.current.headers.filter((h) => h.isFilter === true)
 })
@@ -28,7 +24,6 @@ const options = computed(() => {
   return result
 })
 
-// functions that mutate state and trigger updates
 function removeFilters() {}
 function openSidebar() {
   store.isOpen = true
@@ -37,7 +32,6 @@ function closeSidebar() {
   store.isOpen = false
 }
 
-// lifecycle hooks
 </script>
 
 <template>

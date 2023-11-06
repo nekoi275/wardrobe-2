@@ -4,7 +4,7 @@ import { credentials } from '../../apicreds'
 export const useApiStore = defineStore('api', () => {
   const url = credentials().url
   const apiKey = credentials().apiKey
-  const mediaKey = credentials().mediaKey
+  //const mediaKey = credentials().mediaKey
   const requestConfig = {
     headers: {
       'x-apikey': apiKey

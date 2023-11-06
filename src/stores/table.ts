@@ -24,8 +24,11 @@ export const useTableStore = defineStore('tables', () => {
       return result
     })
   }
+  function updateHeaders(headers: Header[]) {
+    current.value.headers = headers
+  }
 
-  return { headers, clothes, accessories, current, sorting, sort }
+  return { headers, clothes, accessories, current, sorting, sort, updateHeaders }
 })
 
 interface ClothesInfo {

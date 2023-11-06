@@ -6,6 +6,13 @@ import MoodboardView from '../views/MoodboardView.vue'
 import { useTableStore } from '@/stores/table'
 import { useApiStore } from '@/stores/api'
 
+function getData(apiStore: any, tableName: String, callback: (response: any) => void) {
+  apiStore
+    .getAll(tableName)
+    .then(callback)
+    .catch((error: any) => console.error(error))
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -16,14 +23,10 @@ const router = createRouter({
       beforeEnter: () => {
         const api = useApiStore()
         const store = useTableStore()
-
-        api
-          .getAll('clothes')
-          .then((response: any) => {
-            store.clothes = [...response]
-            store.current.rows = store.clothes.filter((item) => !item.isOld)
-          })
-          .catch((error) => console.error(error))
+        getData(api, 'clothes', (response: any) => {
+          store.clothes = [...response]
+          store.current.rows = [...store.clothes.filter((item) => !item.isOld)]
+        })
       }
     },
     {
@@ -33,14 +36,10 @@ const router = createRouter({
       beforeEnter: () => {
         const api = useApiStore()
         const store = useTableStore()
-
-        api
-          .getAll('accessories')
-          .then((response: any) => {
-            store.accessories = [...response]
-            store.current.rows = store.accessories.filter((item) => !item.isOld)
-          })
-          .catch((error) => console.error(error))
+        getData(api, 'accessories', (response: any) => {
+          store.accessories = [...response]
+          store.current.rows = [...store.accessories.filter((item) => !item.isOld)]
+        })
       }
     },
     {
@@ -51,21 +50,14 @@ const router = createRouter({
         const api = useApiStore()
         const store = useTableStore()
         store.current.rows = []
-        api
-          .getAll('accessories')
-          .then((response: any) => {
-            store.accessories = [...response]
-            store.current.rows.push(...store.accessories.filter((item) => item.isOld))
-          })
-          .catch((error) => console.error(error))
-
-        api
-          .getAll('clothes')
-          .then((response: any) => {
-            store.clothes = [...response]
-            store.current.rows.push(...store.clothes.filter((item) => item.isOld))
-          })
-          .catch((error) => console.error(error))
+        getData(api, 'accessories', (response: any) => {
+          store.accessories = [...response]
+          store.current.rows.push(...store.accessories.filter((item) => item.isOld))
+        })
+        getData(api, 'clothes', (response: any) => {
+          store.clothes = [...response]
+          store.current.rows.push(...store.clothes.filter((item) => item.isOld))
+        })
       }
     },
     {

@@ -6,19 +6,15 @@ import { onBeforeMount } from 'vue'
 
 const store = useTableStore()
 
-function updateHeaders() {
-  store.current.headers = [
+onBeforeMount(() => {
+  store.updateHeaders([
     { name: 'type', displayName: 'TYPE', isFilter: true },
     { name: 'color', displayName: 'COLOR', isFilter: true },
     { name: 'description', displayName: 'DESCRIPTION', isFilter: false },
     { name: 'price', displayName: 'PRICE', isFilter: false },
     { name: 'year', displayName: 'YEAR', isFilter: true },
     { name: 'season', displayName: 'SEASON', isFilter: true }
-  ]
-}
-
-onBeforeMount(() => {
-  updateHeaders()
+  ])
 })
 </script>
 

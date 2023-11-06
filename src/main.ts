@@ -19,6 +19,7 @@ import {
 addIcons(FaAngleUp, FaAngleDown, FaImage, FaEdit, FaTrashAlt, FaShareSquare, FaFilter)
 
 const app = createApp(App)
+const pinia = createPinia()
 app.directive('click-outside', {
   beforeMount: function (element, binding) {
     element.clickOutsideEvent = function (event: { target: any }) {
@@ -34,7 +35,7 @@ app.directive('click-outside', {
 })
 app.component('v-icon', OhVueIcon)
 
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 
 app.mount('#app')

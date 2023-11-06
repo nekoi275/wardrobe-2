@@ -5,7 +5,6 @@ export const useTableStore = defineStore('tables', () => {
   const headers = ref([] as Header[])
   const clothes = ref([] as ClothesInfo[])
   const accessories = ref([] as ClothesInfo[])
-  const old = ref([] as ClothesInfo[])
   const current = ref({} as CurrentTable)
   const sorting = ref({} as Sorting)
 
@@ -26,7 +25,7 @@ export const useTableStore = defineStore('tables', () => {
     })
   }
 
-  return { headers, clothes, accessories, old, current, sorting, sort }
+  return { headers, clothes, accessories, current, sorting, sort }
 })
 
 interface ClothesInfo {

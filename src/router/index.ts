@@ -23,10 +23,14 @@ const router = createRouter({
       beforeEnter: () => {
         const api = useApiStore()
         const store = useTableStore()
-        getData(api, 'clothes', (response: any) => {
-          store.clothes = [...response]
+        if (store.clothes.length == 0) {
+          getData(api, 'clothes', (response: any) => {
+            store.clothes = [...response]
+            store.current.rows = [...store.clothes.filter((item) => !item.isOld)]
+          })
+        } else {
           store.current.rows = [...store.clothes.filter((item) => !item.isOld)]
-        })
+        }
       }
     },
     {
@@ -36,10 +40,14 @@ const router = createRouter({
       beforeEnter: () => {
         const api = useApiStore()
         const store = useTableStore()
-        getData(api, 'accessories', (response: any) => {
-          store.accessories = [...response]
+        if (store.accessories.length == 0) {
+          getData(api, 'accessories', (response: any) => {
+            store.accessories = [...response]
+            store.current.rows = [...store.accessories.filter((item) => !item.isOld)]
+          })
+        } else {
           store.current.rows = [...store.accessories.filter((item) => !item.isOld)]
-        })
+        }
       }
     },
     {
@@ -50,14 +58,22 @@ const router = createRouter({
         const api = useApiStore()
         const store = useTableStore()
         store.current.rows = []
-        getData(api, 'accessories', (response: any) => {
-          store.accessories = [...response]
-          store.current.rows.push(...store.accessories.filter((item) => item.isOld))
-        })
-        getData(api, 'clothes', (response: any) => {
-          store.clothes = [...response]
+        if (store.clothes.length == 0) {
+          getData(api, 'clothes', (response: any) => {
+            store.clothes = [...response]
+            store.current.rows.push(...store.clothes.filter((item) => item.isOld))
+          })
+        } else {
           store.current.rows.push(...store.clothes.filter((item) => item.isOld))
-        })
+        }
+        if (store.accessories.length == 0) {
+          getData(api, 'accessories', (response: any) => {
+            store.accessories = [...response]
+            store.current.rows.push(...store.accessories.filter((item) => item.isOld))
+          })
+        } else {
+          store.current.rows.push(...store.accessories.filter((item) => item.isOld))
+        }
       }
     },
     {

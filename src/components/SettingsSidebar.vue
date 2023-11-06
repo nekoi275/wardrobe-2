@@ -10,7 +10,7 @@ const filters = computed(() => {
   return tableStore.current.headers.filter((h) => h.isFilter === true)
 })
 const options = computed(() => {
-  const rows = tableStore.current.rows
+  const rows = tableStore.current.rows || []
   let result: { [propName: string]: any } = {}
   for (let i = 0; i < filters.value.length; i++) {
     result[filters.value[i].name] = []

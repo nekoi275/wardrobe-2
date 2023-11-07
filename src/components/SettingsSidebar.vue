@@ -24,26 +24,28 @@ const options = computed(() => {
   return result
 })
 
-function removeFilters() {}
 function openSidebar() {
   store.isOpen = true
 }
 function closeSidebar() {
   store.isOpen = false
 }
-
 </script>
 
 <template>
   <aside :class="{ open: store.isOpen }" v-click-outside="closeSidebar">
-    <v-icon name="fa-filter" @click="openSidebar()" />
+    <V-icon name="fa-filter" @click="openSidebar()" />
     <div v-for="filter in filters" :key="filter.name">
       <span>{{ filter.displayName }}</span>
-      <select multiple>
-        <option v-for="option in options[filter.name]" :key="option.name">{{ option }}</option>
-      </select>
+      <Multi-select
+        :options="options[filter.name]"
+        mode="tags"
+        :searchable="true"
+        :canClear="false"
+        v-model="store.filters[filter.name]"
+      >
+      </Multi-select>
     </div>
-    <button @click="removeFilters()">Reset</button>
   </aside>
 </template>
 
@@ -74,17 +76,6 @@ aside {
 span {
   display: block;
   margin-bottom: 10px;
-}
-select {
-  width: 100%;
-}
-option:checked {
-  background-color: var(--main-light-color);
-}
-option:focus {
-  background-color: var(--main-light-color);
-}
-option:active {
-  background-color: var(--main-light-color);
+  margin-top: 10px;
 }
 </style>

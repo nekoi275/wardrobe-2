@@ -5,8 +5,14 @@
   --warning-color: #f73149;
   --text-dark-color: #180c0c;
   --text-light-color: #eff5fa;
-
   --section-gap: 160px;
+  --ms-tag-bg: #484757;
+  --ms-dropdown-bg: #eff5fa;
+  --ms-dropdown-border-color: #484757;
+  --ms-option-bg-pointed: #9da8c0;
+  --ms-border-color: #9da8c0;
+  --ms-border-color-active: #9da8c0;
+  --ms-ring-color: #9da8c0;
 }
 
 *,

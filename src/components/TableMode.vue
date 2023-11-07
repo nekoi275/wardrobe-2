@@ -36,8 +36,8 @@ function moveToOld(row: {}) {
         <span>
           {{ header.displayName }}
         </span>
-        <v-icon v-show="store.sorting.field == header.name && store.sorting.isAscending" name="fa-angle-up" />
-        <v-icon v-show="store.sorting.field == header.name && !store.sorting.isAscending" name="fa-angle-down" />
+        <V-icon v-show="store.sorting.field == header.name && store.sorting.isAscending" name="fa-angle-up" />
+        <V-icon v-show="store.sorting.field == header.name && !store.sorting.isAscending" name="fa-angle-down" />
       </th>
       <th class="empty-th"></th>
     </thead>
@@ -50,10 +50,10 @@ function moveToOld(row: {}) {
         <td>{{ row.year }}</td>
         <td>{{ row.season || '' }}</td>
         <td>
-          <v-icon name="fa-image" @click="openImageModal(row.image)"/>
-          <v-icon name="fa-edit" @click="openModal(row)"/>
-          <v-icon name="fa-trash-alt" @click="remove(row)"/>
-          <v-icon name="fa-share-square" @click="moveToOld(row)"/>
+          <V-icon name="fa-image" @click="openImageModal(row.image)"/>
+          <V-icon name="fa-edit" @click="openModal(row)"/>
+          <V-icon name="fa-trash-alt" @click="remove(row)"/>
+          <V-icon name="fa-share-square" @click="moveToOld(row)"/>
         </td>
       </tr>
     </tbody>

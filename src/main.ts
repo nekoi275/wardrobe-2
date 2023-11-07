@@ -1,3 +1,4 @@
+import '@vueform/multiselect/themes/default.css'
 import './assets/base.css'
 
 import { createApp } from 'vue'
@@ -15,6 +16,7 @@ import {
   FaShareSquare,
   FaFilter
 } from 'oh-vue-icons/icons'
+import  Multiselect  from '@vueform/multiselect'
 
 addIcons(FaAngleUp, FaAngleDown, FaImage, FaEdit, FaTrashAlt, FaShareSquare, FaFilter)
 
@@ -33,7 +35,8 @@ app.directive('click-outside', {
     document.body.removeEventListener('click', element.clickOutsideEvent)
   }
 })
-app.component('v-icon', OhVueIcon)
+app.component('V-icon', OhVueIcon)
+app.component('Multi-select', Multiselect)
 
 app.use(pinia)
 app.use(router)

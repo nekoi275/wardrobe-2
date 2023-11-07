@@ -1,48 +1,38 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useSidebarStore } from '@/stores/sidebar'
-import { useTableStore } from '@/stores/table'
 
-const store = useSidebarStore()
-const tableStore = useTableStore()
-
-const filters = computed(() => {
-  return tableStore.current.headers.filter((h) => h.isFilter === true)
-})
-const options = computed(() => {
-  const rows = tableStore.current.rows || []
-  let result: { [propName: string]: any } = {}
-  for (let i = 0; i < filters.value.length; i++) {
-    result[filters.value[i].name] = []
-    for (let j = 0; j < rows.length; j++) {
-      let option = rows[j][filters.value[i].name] || ''
-      if (!result[filters.value[i].name].includes(option)) {
-        result[filters.value[i].name].push(option)
-      }
-    }
-  }
-  return result
-})
+const sidebarStore = useSidebarStore()
 
 function openSidebar() {
-  store.isOpen = true
+  sidebarStore.isOpen = true
 }
 function closeSidebar() {
-  store.isOpen = false
+  sidebarStore.isOpen = false
 }
+/* function applyFilters() {
+  for (let key in store.filters) {
+    let values = store.filters[key]
+    if (values.length > 0) {
+      console.log('works')
+      tableStore.current.rows = tableStore.current.rows.filter((item) => {
+        return values.includes(item[key])
+      })
+    }
+  }
+} */
 </script>
 
 <template>
-  <aside :class="{ open: store.isOpen }" v-click-outside="closeSidebar">
+  <aside :class="{ open: sidebarStore.isOpen }" v-click-outside="closeSidebar">
     <V-icon name="fa-filter" @click="openSidebar()" />
-    <div v-for="filter in filters" :key="filter.name">
+    <div v-for="filter in sidebarStore.availableFilters.filters" :key="filter.name">
       <span>{{ filter.displayName }}</span>
       <Multi-select
-        :options="options[filter.name]"
+        :options="sidebarStore.availableFilters.options[filter.name]"
         mode="tags"
         :searchable="true"
         :canClear="false"
-        v-model="store.filters[filter.name]"
+        v-model="sidebarStore.filters[filter.name]"
       >
       </Multi-select>
     </div>

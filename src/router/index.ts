@@ -5,6 +5,7 @@ import OldView from '../views/OldView.vue'
 import MoodboardView from '../views/MoodboardView.vue'
 import { useTableStore } from '@/stores/table'
 import { useApiStore } from '@/stores/api'
+import { useSidebarStore } from '@/stores/sidebar'
 
 function getData(apiStore: any, tableName: String, callback: (response: any) => void) {
   apiStore
@@ -22,14 +23,25 @@ const router = createRouter({
       component: ClothesView,
       beforeEnter: () => {
         const api = useApiStore()
-        const store = useTableStore()
-        if (store.clothes.length == 0) {
+        const tableStore = useTableStore()
+        const sidebarStore = useSidebarStore()
+        tableStore.updateHeaders([
+          { name: 'type', displayName: 'TYPE', isFilter: true },
+          { name: 'color', displayName: 'COLOR', isFilter: true },
+          { name: 'description', displayName: 'DESCRIPTION', isFilter: false },
+          { name: 'price', displayName: 'PRICE', isFilter: false },
+          { name: 'year', displayName: 'YEAR', isFilter: true },
+          { name: 'season', displayName: 'SEASON', isFilter: true }
+        ])
+        if (tableStore.clothes.length == 0) {
           getData(api, 'clothes', (response: any) => {
-            store.clothes = [...response]
-            store.current.rows = [...store.clothes.filter((item) => !item.isOld)]
+            tableStore.clothes = [...response]
+            tableStore.current.rows = [...tableStore.clothes.filter((item) => !item.isOld)]
+            sidebarStore.getFilters(tableStore.current)
           })
         } else {
-          store.current.rows = [...store.clothes.filter((item) => !item.isOld)]
+          tableStore.current.rows = [...tableStore.clothes.filter((item) => !item.isOld)]
+          sidebarStore.getFilters(tableStore.current)
         }
       }
     },
@@ -39,14 +51,25 @@ const router = createRouter({
       component: AccessoriesView,
       beforeEnter: () => {
         const api = useApiStore()
-        const store = useTableStore()
-        if (store.accessories.length == 0) {
+        const tableStore = useTableStore()
+        const sidebarStore = useSidebarStore()
+        tableStore.updateHeaders([
+          { name: 'type', displayName: 'TYPE', isFilter: true },
+          { name: 'color', displayName: 'COLOR', isFilter: true },
+          { name: 'description', displayName: 'DESCRIPTION', isFilter: false },
+          { name: 'price', displayName: 'PRICE', isFilter: false },
+          { name: 'year', displayName: 'YEAR', isFilter: true },
+          { name: '', displayName: '', isFilter: false }
+        ])
+        if (tableStore.accessories.length == 0) {
           getData(api, 'accessories', (response: any) => {
-            store.accessories = [...response]
-            store.current.rows = [...store.accessories.filter((item) => !item.isOld)]
+            tableStore.accessories = [...response]
+            tableStore.current.rows = [...tableStore.accessories.filter((item) => !item.isOld)]
+            sidebarStore.getFilters(tableStore.current)
           })
         } else {
-          store.current.rows = [...store.accessories.filter((item) => !item.isOld)]
+          tableStore.current.rows = [...tableStore.accessories.filter((item) => !item.isOld)]
+          sidebarStore.getFilters(tableStore.current)
         }
       }
     },
@@ -56,23 +79,36 @@ const router = createRouter({
       component: OldView,
       beforeEnter: () => {
         const api = useApiStore()
-        const store = useTableStore()
-        store.current.rows = []
-        if (store.clothes.length == 0) {
+        const tableStore = useTableStore()
+        const sidebarStore = useSidebarStore()
+        tableStore.updateHeaders([
+          { name: 'type', displayName: 'TYPE', isFilter: true },
+          { name: 'color', displayName: 'COLOR', isFilter: true },
+          { name: 'description', displayName: 'DESCRIPTION', isFilter: false },
+          { name: 'price', displayName: 'PRICE', isFilter: false },
+          { name: 'year', displayName: 'YEAR', isFilter: true },
+          { name: 'season', displayName: 'SEASON', isFilter: true }
+        ])
+        tableStore.current.rows = []
+        if (tableStore.clothes.length == 0) {
           getData(api, 'clothes', (response: any) => {
-            store.clothes = [...response]
-            store.current.rows.push(...store.clothes.filter((item) => item.isOld))
+            tableStore.clothes = [...response]
+            tableStore.current.rows.push(...tableStore.clothes.filter((item) => item.isOld))
+            sidebarStore.getFilters(tableStore.current)
           })
         } else {
-          store.current.rows.push(...store.clothes.filter((item) => item.isOld))
+          tableStore.current.rows.push(...tableStore.clothes.filter((item) => item.isOld))
+          sidebarStore.getFilters(tableStore.current)
         }
-        if (store.accessories.length == 0) {
+        if (tableStore.accessories.length == 0) {
           getData(api, 'accessories', (response: any) => {
-            store.accessories = [...response]
-            store.current.rows.push(...store.accessories.filter((item) => item.isOld))
+            tableStore.accessories = [...response]
+            tableStore.current.rows.push(...tableStore.accessories.filter((item) => item.isOld))
+            sidebarStore.getFilters(tableStore.current)
           })
         } else {
-          store.current.rows.push(...store.accessories.filter((item) => item.isOld))
+          tableStore.current.rows.push(...tableStore.accessories.filter((item) => item.isOld))
+          sidebarStore.getFilters(tableStore.current)
         }
       }
     },

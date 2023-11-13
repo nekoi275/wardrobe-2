@@ -2,11 +2,11 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useTableStore = defineStore('tables', () => {
-  const headers = ref([] as Header[])
   const clothes = ref([] as ClothesInfo[])
   const accessories = ref([] as ClothesInfo[])
   const current = ref({} as CurrentTable)
   const sorting = ref({} as Sorting)
+  const filtered = ref([] as ClothesInfo[])
 
   function sort() {
     return current.value.rows.sort((item1: ClothesInfo, item2: ClothesInfo) => {
@@ -28,7 +28,7 @@ export const useTableStore = defineStore('tables', () => {
     current.value.headers = headers
   }
 
-  return { headers, clothes, accessories, current, sorting, sort, updateHeaders }
+  return { clothes, accessories, current, sorting, filtered, sort, updateHeaders }
 })
 
 interface ClothesInfo {
@@ -39,7 +39,7 @@ interface ClothesInfo {
   year: number
   season?: string | null
   _id: string
-  image: string,
+  image: string
   isOld: boolean
   [propName: string]: any
 }

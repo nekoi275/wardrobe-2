@@ -27,7 +27,23 @@ export const useSidebarStore = defineStore('sidebar', () => {
     availableFilters.value.options = options
   }
 
-  return { isOpen, view, filters, availableFilters, getFilters }
+  function applyFilters(tableRows: Array<ClothesInfo>) {
+    console.log(tableRows)
+    return tableRows.filter(makeFilter(filters.value))
+  }
+  function makeFilter(filters: Filters) {
+    console.log(filters)
+    return (item: ClothesInfo) => {
+      for (const [param, values] of Object.entries(filters)) {
+        if (values.length > 0 && !values.includes(item[param])) {
+          return false
+        }
+      }
+      return true
+    }
+  }
+
+  return { isOpen, view, filters, availableFilters, getFilters, applyFilters }
 })
 
 interface View {

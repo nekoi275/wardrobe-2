@@ -9,17 +9,7 @@ function openSidebar() {
 function closeSidebar() {
   sidebarStore.isOpen = false
 }
-/* function applyFilters() {
-  for (let key in store.filters) {
-    let values = store.filters[key]
-    if (values.length > 0) {
-      console.log('works')
-      tableStore.current.rows = tableStore.current.rows.filter((item) => {
-        return values.includes(item[key])
-      })
-    }
-  }
-} */
+
 </script>
 
 <template>
@@ -33,6 +23,8 @@ function closeSidebar() {
         :searchable="true"
         :canClear="false"
         v-model="sidebarStore.filters[filter.name]"
+        @select="$emit('selected')"
+        @deselect="$emit('deselected')"
       >
       </Multi-select>
     </div>

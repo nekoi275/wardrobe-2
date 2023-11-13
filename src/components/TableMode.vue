@@ -1,22 +1,19 @@
 <script setup lang="ts">
 import { useTableStore } from '@/stores/table'
 
-const store = useTableStore()
+const tableStore = useTableStore()
 
 function setSorting(field: string) {
-  if (store.sorting.field == field) {
-    store.sorting = {field: field, isAscending: !store.sorting.isAscending}
+  if (tableStore.sorting.field == field) {
+    tableStore.sorting = {field: field, isAscending: !tableStore.sorting.isAscending}
   } else {
-    store.sorting = {field: field, isAscending: true}
+    tableStore.sorting = {field: field, isAscending: true}
   }
   return field
 }
 function sort(field: string) {
   setSorting(field);
-  store.sort();
-}
-function openImageModal(row: {}) {
-  return row
+  tableStore.sort();
 }
 function openModal(row: {}) {
   return row
@@ -27,22 +24,24 @@ function remove(row: {}) {
 function moveToOld(row: {}) {
   return row
 }
+
+/* TODO: add tooltips to icons */
 </script>
 
 <template>
   <table>
     <thead>
-      <th v-for="header in store.current.headers" :key="header.name" @click="sort(header.name)">
+      <th v-for="header in tableStore.current.headers" :key="header.name" @click="sort(header.name)">
         <span>
           {{ header.displayName }}
         </span>
-        <V-icon v-show="store.sorting.field == header.name && store.sorting.isAscending" name="fa-angle-up" />
-        <V-icon v-show="store.sorting.field == header.name && !store.sorting.isAscending" name="fa-angle-down" />
+        <V-icon v-show="tableStore.sorting.field == header.name && tableStore.sorting.isAscending" name="fa-angle-up" />
+        <V-icon v-show="tableStore.sorting.field == header.name && !tableStore.sorting.isAscending" name="fa-angle-down" />
       </th>
       <th class="empty-th"></th>
     </thead>
     <tbody>
-      <tr v-for="row in store.current.rows" :key="row._id">
+      <tr v-for="row in tableStore.filtered" :key="row._id">
         <td>{{ row.type }}</td>
         <td :style="{ backgroundColor: row.color }"></td>
         <td>{{ row.description }}</td>
@@ -50,10 +49,10 @@ function moveToOld(row: {}) {
         <td>{{ row.year }}</td>
         <td>{{ row.season || '' }}</td>
         <td>
-          <V-icon name="fa-image" @click="openImageModal(row.image)"/>
+          <V-icon name="fa-image" @click="$emit('openImage', row.image)"/>
           <V-icon name="fa-edit" @click="openModal(row)"/>
           <V-icon name="fa-trash-alt" @click="remove(row)"/>
-          <V-icon name="fa-share-square" @click="moveToOld(row)"/>
+          <V-icon v-if="!row.isOld" name="fa-share-square" @click="moveToOld(row)"/>
         </td>
       </tr>
     </tbody>

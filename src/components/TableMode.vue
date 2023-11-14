@@ -24,7 +24,6 @@ function remove(row: {}) {
 function moveToOld(row: {}) {
   return row
 }
-
 /* TODO: add tooltips to icons */
 </script>
 
@@ -38,7 +37,7 @@ function moveToOld(row: {}) {
         <V-icon v-show="tableStore.sorting.field == header.name && tableStore.sorting.isAscending" name="fa-angle-up" />
         <V-icon v-show="tableStore.sorting.field == header.name && !tableStore.sorting.isAscending" name="fa-angle-down" />
       </th>
-      <th class="empty-th"></th>
+      <th class="empty-th">Total: {{ tableStore.totalAmount }}</th>
     </thead>
     <tbody>
       <tr v-for="row in tableStore.filtered" :key="row._id">

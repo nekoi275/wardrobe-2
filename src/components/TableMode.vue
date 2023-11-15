@@ -46,9 +46,9 @@ function moveToOld(row: {}) {
         <td>{{ row.description }}</td>
         <td>{{ row.price }}</td>
         <td>{{ row.year }}</td>
-        <td>{{ row.season || '' }}</td>
+        <td v-if="row.season">{{ row.season }}</td>
         <td>
-          <V-icon name="fa-image" @click="$emit('openImage', row.image)"/>
+          <V-icon name="fa-image" @click="$emit('openImage')"/>
           <V-icon name="fa-edit" @click="openModal(row)"/>
           <V-icon name="fa-trash-alt" @click="remove(row)"/>
           <V-icon v-if="!row.isOld" name="fa-share-square" @click="moveToOld(row)"/>

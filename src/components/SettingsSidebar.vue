@@ -9,7 +9,7 @@ function openSidebar() {
 function closeSidebar() {
   sidebarStore.isOpen = false
 }
-
+// TODO: add colors to color filters
 </script>
 
 <template>

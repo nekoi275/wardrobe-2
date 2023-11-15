@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { credentials } from '../../apicreds'
+import img from '@/assets/default_image.jpg'
 
 export const useApiStore = defineStore('api', () => {
   const url = credentials().url
@@ -19,9 +20,8 @@ export const useApiStore = defineStore('api', () => {
       }
     })
   }
-//https://clothes-c8bd.restdb.io/media/6552387b02ff4b550000bf55
-  function getImage(imageId: string) {
-    return `${url}/media/${imageId}`
+  function getImage() {
+    return img
   }
 
   return { getAll, getImage }

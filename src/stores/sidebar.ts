@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import type { ClothesInfo, CurrentTable } from './interfaces'
 
 export const useSidebarStore = defineStore('sidebar', () => {
   const isOpen = ref(false)
@@ -8,25 +9,25 @@ export const useSidebarStore = defineStore('sidebar', () => {
   const availableFilters = ref({} as AvailableFilters)
 
   function getFilters(currentTable: CurrentTable) {
-    const filters = currentTable.headers?.filter((h) => h.isFilter === true)
+    const filters = currentTable.headers.filter(h => h.isFilter === true)
+    availableFilters.value.filters = filters
+    const filterNames = filters.map(f => {return f.name})
     const options = (() => {
       const rows = currentTable.rows
       const result: { [propName: string]: any } = {}
-      for (let i = 0; i < filters.length; i++) {
-        result[filters[i].name] = []
+      for (let i = 0; i < filterNames.length; i++) {
+        result[filterNames[i]] = []
         for (let j = 0; j < rows.length; j++) {
-          const option = rows[j][filters[i].name]
-          if (!result[filters[i].name].includes(option)) {
-            result[filters[i].name].push(option)
+          const option = rows[j][filterNames[i]]
+          if (option && !result[filterNames[i]].includes(option)) {
+            result[filterNames[i]].push(option)
           }
         }
       }
       return result
     })()
-    availableFilters.value.filters = filters
     availableFilters.value.options = options
   }
-
   function applyFilters(tableRows: Array<ClothesInfo>) {
     return tableRows.filter(makeFilter(filters.value))
   }
@@ -51,30 +52,6 @@ interface View {
 
 interface Filters {
   [propName: string]: Array<any>
-}
-
-interface ClothesInfo {
-  type: string
-  color: string
-  description: string
-  price: number
-  year: number
-  season?: string | null
-  _id: string
-  image: string
-  isOld: boolean
-  [propName: string]: any
-}
-
-interface Header {
-  name: string
-  displayName: string
-  isFilter: boolean
-}
-
-interface CurrentTable {
-  headers: Header[]
-  rows: ClothesInfo[]
 }
 
 interface Options {

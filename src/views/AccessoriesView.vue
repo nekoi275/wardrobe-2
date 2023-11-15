@@ -16,8 +16,8 @@ function applyFilters() {
   const filteredValues = sidebarStore.applyFilters(tableStore.current.rows)
   tableStore.filtered = filteredValues
 }
-function openImage(imageId: string) {
-  imageModalStore.imageUrl = api.getImage(imageId)
+function openImage() {
+  imageModalStore.imageUrl = api.getImage()
   imageModalStore.isOpen = true
 }
 </script>

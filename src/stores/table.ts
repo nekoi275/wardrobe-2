@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import type { ClothesInfo, Header, CurrentTable } from './interfaces'
 
 export const useTableStore = defineStore('tables', () => {
   const clothes = ref([] as ClothesInfo[])
@@ -34,30 +35,6 @@ export const useTableStore = defineStore('tables', () => {
 
   return { clothes, accessories, current, sorting, filtered, totalAmount, sort, updateHeaders, calculateTotalAmount }
 })
-
-interface ClothesInfo {
-  type: string
-  color: string
-  description: string
-  price: number
-  year: number
-  season?: string | null
-  _id: string
-  image: string
-  isOld: boolean
-  [propName: string]: any
-}
-
-interface Header {
-  name: string
-  displayName: string
-  isFilter: boolean
-}
-
-interface CurrentTable {
-  headers: Header[]
-  rows: ClothesInfo[]
-}
 
 interface Sorting {
   field: string

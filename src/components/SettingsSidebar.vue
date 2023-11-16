@@ -28,6 +28,9 @@ function closeSidebar() {
       >
       </Multi-select>
     </div>
+    <V-toggle :offLabel="'Table'" 
+    :onLabel="'Cards'"
+    v-model="sidebarStore.cardsView"></V-toggle>
   </aside>
 </template>
 
@@ -59,5 +62,9 @@ span {
   display: block;
   margin-bottom: 10px;
   margin-top: 10px;
+}
+.toggle-container {
+  margin-top: 30px;
+  box-shadow: none;
 }
 </style>

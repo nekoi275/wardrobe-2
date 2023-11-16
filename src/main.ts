@@ -1,9 +1,9 @@
+import '@vueform/toggle/themes/default.css'
 import '@vueform/multiselect/themes/default.css'
 import './assets/base.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-
 import App from './App.vue'
 import router from './router'
 import { OhVueIcon, addIcons } from 'oh-vue-icons'
@@ -14,11 +14,13 @@ import {
   FaEdit,
   FaTrashAlt,
   FaShareSquare,
-  FaFilter
+  FaFilter,
+  FaRegularWindowClose
 } from 'oh-vue-icons/icons'
 import  Multiselect  from '@vueform/multiselect'
+import Toggle from '@vueform/toggle'
 
-addIcons(FaAngleUp, FaAngleDown, FaImage, FaEdit, FaTrashAlt, FaShareSquare, FaFilter)
+addIcons(FaAngleUp, FaAngleDown, FaImage, FaEdit, FaTrashAlt, FaShareSquare, FaFilter, FaRegularWindowClose)
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -37,6 +39,7 @@ app.directive('click-outside', {
 })
 app.component('V-icon', OhVueIcon)
 app.component('Multi-select', Multiselect)
+app.component('V-toggle', Toggle)
 
 app.use(pinia)
 app.use(router)

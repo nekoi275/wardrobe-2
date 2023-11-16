@@ -7,13 +7,14 @@ import { useSidebarStore } from '@/stores/sidebar'
 import { useTableStore } from '@/stores/table'
 import { useImageModalStore } from '@/stores/imageModal'
 import { useApiStore } from '@/stores/api'
-import { useModalFormStore } from '@/stores/modalForm'
+import { useFormStore } from '@/stores/form'
+import type { ClothesInfo } from '@/stores/interfaces'
 
 const imageModalStore = useImageModalStore()
 const tableStore = useTableStore()
 const sidebarStore = useSidebarStore()
 const api = useApiStore()
-const modalFormStore = useModalFormStore()
+const formStore = useFormStore()
 
 function applyFilters() {
   const filteredValues = sidebarStore.applyFilters(tableStore.current.rows)
@@ -23,14 +24,18 @@ function openImage() {
   imageModalStore.imageUrl = api.getImage()
   imageModalStore.isOpen = true
 }
+function openForm(row: ClothesInfo) {
+  formStore.isOpen = true
+  formStore.formData = row
+}
 </script>
 
 <template>
-  <TableMode @openImage="openImage"></TableMode>
+  <TableMode @openImage="openImage" @openForm="openForm"></TableMode>
   <SettingsSidebar @selected="applyFilters()" @deselected="applyFilters()"></SettingsSidebar>
   <ImageModal></ImageModal>
   <ModalForm></ModalForm>
-  <button @click="modalFormStore.isOpen = true">Add</button>
+  <button @click="formStore.isOpen = true">Add</button>
 </template>
 
 <style scoped>

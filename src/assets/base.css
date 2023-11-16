@@ -13,6 +13,10 @@
   --ms-border-color: #9da8c0;
   --ms-border-color-active: #9da8c0;
   --ms-ring-color: #9da8c0;
+  --toggle-bg-on: #484757;
+  --toggle-border-on: #9da8c0;
+  --toggle-width: 100px;
+  --toggle-height: 50px;
 }
 
 *,

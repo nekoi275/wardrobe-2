@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useModalFormStore } from '@/stores/modalForm'
+import { useFormStore } from '@/stores/form'
 
-const modalFormStore = useModalFormStore()
+const formStore = useFormStore()
 
 function getColor(event: Event) {
   const canvas: HTMLCanvasElement = document.getElementById('preview')
@@ -10,13 +10,13 @@ function getColor(event: Event) {
     let x = event.offsetX
     let y = event.offsetY
     let imageData = ctx.getImageData(x, y, 1, 1).data
-    modalFormStore.formData.color = `rgb(${imageData[0]},${imageData[1]},${imageData[2]})`
+    formStore.formData.color = `rgb(${imageData[0]},${imageData[1]},${imageData[2]})`
   }
 }
 function submit() {}
 function close() {
-  modalFormStore.isOpen = false
-  modalFormStore.formData = {
+  formStore.isOpen = false
+  formStore.formData = {
     _id: '',
     type: '',
     color: '',
@@ -30,26 +30,27 @@ function close() {
 </script>
 
 <template>
-  <div class="container" v-show="modalFormStore.isOpen">
-    <div class="overlay" @click="modalFormStore.isOpen = false"></div>
+  <div class="container" v-show="formStore.isOpen">
+    <div class="overlay" @click="close()"></div>
     <div class="modal">
+      <V-icon name="fa-regular-window-close" @click="close()"/>
       <form>
-        <input type="hidden" v-model="modalFormStore.formData._id" />
+        <input type="hidden" v-model="formStore.formData._id" />
         <!-- <span
           class="required-msg"
           v-show="currentData.type == '' && isSubmitted"
         >Это поле обязательное</span> -->
         <label>
           <span>Type</span>
-          <input type="text" v-model="modalFormStore.formData.type" required />
+          <input type="text" v-model="formStore.formData.type" required />
         </label>
         <label>
           <span>Description</span>
-          <input type="text" v-model="modalFormStore.formData.description" />
+          <input type="text" v-model="formStore.formData.description" />
         </label>
         <label>
           <span>Price</span>
-          <input type="number" v-model.number="modalFormStore.formData.price" />
+          <input type="number" v-model.number="formStore.formData.price" />
         </label>
         <label>
           <span>Year</span>
@@ -57,13 +58,13 @@ function close() {
             type="number"
             min="2000"
             max="2050"
-            v-model.number="modalFormStore.formData.year"
+            v-model.number="formStore.formData.year"
             required
           />
         </label>
         <label>
           <span>Season</span>
-          <select name="season" v-model="modalFormStore.formData.season" required>
+          <select name="season" v-model="formStore.formData.season" required>
             <option value="winter">winter</option>
             <option value="autumn/spring">autumn/spring</option>
             <option value="summer">summer</option>
@@ -76,13 +77,12 @@ function close() {
         </label>
         <label>
           <span>Color</span>
-          <input type="text" v-model="modalFormStore.formData.color" />
+          <input type="text" v-model="formStore.formData.color" />
         </label>
-        <label class="color-label" v-show="modalFormStore.previewImage">
+        <label class="color-label" v-show="formStore.previewImage">
           <canvas id="preview" width="200" height="200" @click="getColor"></canvas>
         </label>
         <button @click="submit()" type="button">Submit</button>
-        <button @click="close()" type="reset">Close</button>
       </form>
     </div>
   </div>
@@ -115,6 +115,7 @@ function close() {
   background-color: var(--main-light-color);
   border-radius: 3px;
   padding: 30px;
+  text-align: right;
 }
 label {
   display: flex;
@@ -151,5 +152,9 @@ span {
 }
 button {
   margin-right: 20px;
+}
+.ov-icon {
+  margin-bottom: 20px;
+  cursor: pointer;
 }
 </style>

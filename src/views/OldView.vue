@@ -2,30 +2,41 @@
 import TableMode from '@/components/TableMode.vue'
 import SettingsSidebar from '@/components/SettingsSidebar.vue'
 import ImageModal from '@/components/ImageModal.vue'
+import ModalForm from '@/components/ModalForm.vue'
+import CardsMode from '@/components/CardsMode.vue'
 import { useSidebarStore } from '@/stores/sidebar'
 import { useTableStore } from '@/stores/table'
-import { useImageModalStore } from '@/stores/imageModal'
+import { useImageStore } from '@/stores/image'
 import { useApiStore } from '@/stores/api'
+import { useFormStore } from '@/stores/form'
+import type { ClothesInfo } from '@/stores/interfaces'
 
-const imageModalStore = useImageModalStore()
+const imageStore = useImageStore()
 const tableStore = useTableStore()
 const sidebarStore = useSidebarStore()
 const api = useApiStore()
+const formStore = useFormStore()
 
 function applyFilters() {
   const filteredValues = sidebarStore.applyFilters(tableStore.current.rows)
   tableStore.filtered = filteredValues
 }
 function openImage() {
-  imageModalStore.imageUrl = api.getImage()
-  imageModalStore.isOpen = true
+  imageStore.imageUrl = api.getImage()
+  imageStore.isOpen = true
+}
+function openForm(row: ClothesInfo) {
+  formStore.isOpen = true
+  formStore.formData = row
 }
 </script>
 
 <template>
-  <TableMode @openImage="openImage"></TableMode>
+  <TableMode v-if="!sidebarStore.cardsView" @openImage="openImage" @openForm="openForm"></TableMode>
   <SettingsSidebar @selected="applyFilters()" @deselected="applyFilters()"></SettingsSidebar>
   <ImageModal></ImageModal>
+  <ModalForm></ModalForm>
+  <CardsMode v-if="sidebarStore.cardsView" @openForm="openForm"></CardsMode>
 </template>
 
 <style></style>

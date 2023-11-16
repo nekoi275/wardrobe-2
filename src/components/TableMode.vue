@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useTableStore } from '@/stores/table'
+import type { ClothesInfo } from '@/stores/interfaces'
 
 const tableStore = useTableStore()
 
@@ -15,10 +16,10 @@ function sort(field: string) {
   setSorting(field);
   tableStore.sort();
 }
-function remove(row: {}) {
+function remove(row: ClothesInfo) {
   return row
 }
-function moveToOld(row: {}) {
+function moveToOld(row: ClothesInfo) {
   return row
 }
 /* TODO: add tooltips to icons */

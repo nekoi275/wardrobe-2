@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useImageModalStore } from '@/stores/imageModal'
-const imageModalStore = useImageModalStore()
+import { useImageStore } from '@/stores/image'
+const imageStore = useImageStore()
 </script>
 
 <template>
-    <div class="container" v-show="imageModalStore.isOpen">
-      <div class="overlay" @click="imageModalStore.isOpen = !imageModalStore.isOpen"></div>
+    <div class="container" v-show="imageStore.isOpen">
+      <div class="overlay" @click="imageStore.isOpen = !imageStore.isOpen"></div>
       <div class="modal">
-        <img :src="imageModalStore.imageUrl" />
+        <img :src="imageStore.imageUrl" />
       </div>
     </div>
   </template>

@@ -35,7 +35,6 @@ const headers: { [name: string]: Array<Header> } = {
     { name: 'description', displayName: 'DESCRIPTION', isFilter: false },
     { name: 'price', displayName: 'PRICE', isFilter: false },
     { name: 'year', displayName: 'YEAR', isFilter: true },
-    { name: '', displayName: '', isFilter: false }
   ],
   old: [
     { name: 'type', displayName: 'TYPE', isFilter: true },

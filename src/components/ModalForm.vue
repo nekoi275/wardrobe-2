@@ -4,14 +4,15 @@ import { useFormStore } from '@/stores/form'
 const formStore = useFormStore()
 
 function getColor(event: Event) {
-  const canvas: HTMLCanvasElement = document.getElementById('preview')
+/*   const canvas: HTMLCanvasElement = document.getElementById('preview')
   if (canvas) {
     const ctx: CanvasRenderingContext2D = canvas.getContext('2d')
     let x = event.offsetX
     let y = event.offsetY
     let imageData = ctx.getImageData(x, y, 1, 1).data
     formStore.formData.color = `rgb(${imageData[0]},${imageData[1]},${imageData[2]})`
-  }
+  } */
+  return event
 }
 function submit() {}
 function close() {
@@ -27,6 +28,8 @@ function close() {
     isOld: false
   }
 }
+
+// TODO: form validation message
 </script>
 
 <template>
@@ -36,10 +39,6 @@ function close() {
       <V-icon name="fa-regular-window-close" @click="close()"/>
       <form>
         <input type="hidden" v-model="formStore.formData._id" />
-        <!-- <span
-          class="required-msg"
-          v-show="currentData.type == '' && isSubmitted"
-        >Это поле обязательное</span> -->
         <label>
           <span>Type</span>
           <input type="text" v-model="formStore.formData.type" required />

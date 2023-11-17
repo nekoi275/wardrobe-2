@@ -3,8 +3,6 @@ import { useTableStore } from '@/stores/table'
 import ClothesCard from '@/components/ClothesCard.vue'
 
 const tableStore = useTableStore()
-
-/* TODO: add tooltips to icons */
 </script>
 
 <template>

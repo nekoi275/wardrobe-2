@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { ClothesInfo, CurrentTable } from './interfaces'
+import type { ClothesInfo, Header, CurrentTable } from '@/stores/interfaces'
 
 export const useSidebarStore = defineStore('sidebar', () => {
   const isOpen = ref(false)
@@ -54,6 +54,6 @@ interface Options {
 }
 
 interface AvailableFilters {
-  filters: Array<any>
+  filters: Header[]
   options: Options
 }

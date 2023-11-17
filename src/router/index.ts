@@ -14,38 +14,6 @@ function getData(apiStore: any, tableName: String, callback: (response: any) => 
     .catch((error: any) => console.error(error))
 }
 
-interface Header {
-  name: string
-  displayName: string
-  isFilter: boolean
-}
-
-const headers: { [name: string]: Array<Header> } = {
-  clothes: [
-    { name: 'type', displayName: 'TYPE', isFilter: true },
-    { name: 'color', displayName: 'COLOR', isFilter: true },
-    { name: 'description', displayName: 'DESCRIPTION', isFilter: false },
-    { name: 'price', displayName: 'PRICE', isFilter: false },
-    { name: 'year', displayName: 'YEAR', isFilter: true },
-    { name: 'season', displayName: 'SEASON', isFilter: true }
-  ],
-  accessories: [
-    { name: 'type', displayName: 'TYPE', isFilter: true },
-    { name: 'color', displayName: 'COLOR', isFilter: true },
-    { name: 'description', displayName: 'DESCRIPTION', isFilter: false },
-    { name: 'price', displayName: 'PRICE', isFilter: false },
-    { name: 'year', displayName: 'YEAR', isFilter: true },
-  ],
-  old: [
-    { name: 'type', displayName: 'TYPE', isFilter: true },
-    { name: 'color', displayName: 'COLOR', isFilter: true },
-    { name: 'description', displayName: 'DESCRIPTION', isFilter: false },
-    { name: 'price', displayName: 'PRICE', isFilter: false },
-    { name: 'year', displayName: 'YEAR', isFilter: true },
-    { name: 'season', displayName: 'SEASON', isFilter: true }
-  ]
-}
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -78,7 +46,7 @@ router.beforeEach((to) => {
   const sidebarStore = useSidebarStore()
   if (to.name === 'clothes' || to.name === 'accessories') {
     const tableName = to.name
-    tableStore.updateHeaders(headers[tableName])
+    tableStore.updateHeaders(tableStore.headers[tableName])
     if (tableStore[tableName].length == 0) {
       getData(api, tableName, (response: any) => {
         tableStore[tableName] = [...response]
@@ -93,7 +61,7 @@ router.beforeEach((to) => {
     }
   }
   if (to.name === 'old') {
-    tableStore.updateHeaders(headers.old)
+    tableStore.updateHeaders(tableStore.headers.old)
     tableStore.current.rows = []
     if (tableStore.clothes.length == 0) {
       getData(api, 'clothes', (response: any) => {

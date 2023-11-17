@@ -2,9 +2,10 @@
 import { useFormStore } from '@/stores/form'
 
 const formStore = useFormStore()
+const seasonOptions = ['winter', 'autumn/spring', 'summer']
 
 function getColor(event: Event) {
-/*   const canvas: HTMLCanvasElement = document.getElementById('preview')
+  /*   const canvas: HTMLCanvasElement = document.getElementById('preview')
   if (canvas) {
     const ctx: CanvasRenderingContext2D = canvas.getContext('2d')
     let x = event.offsetX
@@ -36,7 +37,7 @@ function close() {
   <div class="container" v-show="formStore.isOpen">
     <div class="overlay" @click="close()"></div>
     <div class="modal">
-      <V-icon name="fa-regular-window-close" @click="close()"/>
+      <V-icon name="fa-regular-window-close" @click="close()" />
       <form>
         <input type="hidden" v-model="formStore.formData._id" />
         <label>
@@ -63,12 +64,13 @@ function close() {
         </label>
         <label>
           <span>Season</span>
-          <select name="season" v-model="formStore.formData.season" required>
-            <option value="winter">winter</option>
-            <option value="autumn/spring">autumn/spring</option>
-            <option value="summer">summer</option>
-            <option value="">any</option>
-          </select>
+          <Multi-select
+            v-model="formStore.formData.season"
+            :options="seasonOptions"
+            mode="single"
+            :canClear="false"
+          >
+          </Multi-select>
         </label>
         <label>
           <span>Photo</span>
@@ -123,12 +125,11 @@ label {
   width: 100%;
   justify-content: flex-end;
 }
-input,
-select {
+input, .multiselect{
   box-sizing: border-box;
-  padding: 5px;
+  padding: 11px;
+  padding-left: 13px;
   margin: 8px;
-  font-family: monospace;
   border-radius: 3px;
   transition: all 0.3s ease;
   border: 3px solid transparent;
@@ -137,7 +138,7 @@ select {
 input:focus {
   border: 3px solid var(--text-light-color);
 }
-input[type="file"] {
+input[type='file'] {
   cursor: pointer;
 }
 span {
@@ -155,5 +156,9 @@ button {
 .ov-icon {
   margin-bottom: 20px;
   cursor: pointer;
+}
+.multiselect {
+  color: var(--text-dark-color);
+  padding: 0px;
 }
 </style>

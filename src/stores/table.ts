@@ -9,6 +9,31 @@ export const useTableStore = defineStore('tables', () => {
   const sorting = ref({} as Sorting)
   const filtered = ref([] as ClothesInfo[])
   const totalAmount = ref(0)
+  const headers: { [name: string]: Array<Header> } = {
+    clothes: [
+      { name: 'type', displayName: 'TYPE', isFilter: true },
+      { name: 'color', displayName: 'COLOR', isFilter: true },
+      { name: 'description', displayName: 'DESCRIPTION', isFilter: false },
+      { name: 'price', displayName: 'PRICE', isFilter: false },
+      { name: 'year', displayName: 'YEAR', isFilter: true },
+      { name: 'season', displayName: 'SEASON', isFilter: true }
+    ],
+    accessories: [
+      { name: 'type', displayName: 'TYPE', isFilter: true },
+      { name: 'color', displayName: 'COLOR', isFilter: true },
+      { name: 'description', displayName: 'DESCRIPTION', isFilter: false },
+      { name: 'price', displayName: 'PRICE', isFilter: false },
+      { name: 'year', displayName: 'YEAR', isFilter: true },
+    ],
+    old: [
+      { name: 'type', displayName: 'TYPE', isFilter: true },
+      { name: 'color', displayName: 'COLOR', isFilter: true },
+      { name: 'description', displayName: 'DESCRIPTION', isFilter: false },
+      { name: 'price', displayName: 'PRICE', isFilter: false },
+      { name: 'year', displayName: 'YEAR', isFilter: true },
+      { name: 'season', displayName: 'SEASON', isFilter: true }
+    ]
+  }
 
   function sort() {
     return current.value.rows.sort((item1: ClothesInfo, item2: ClothesInfo) => {
@@ -33,7 +58,7 @@ export const useTableStore = defineStore('tables', () => {
     totalAmount.value = current.value.rows.length
   }
 
-  return { clothes, accessories, current, sorting, filtered, totalAmount, sort, updateHeaders, calculateTotalAmount }
+  return { clothes, accessories, current, sorting, filtered, totalAmount, headers, sort, updateHeaders, calculateTotalAmount }
 })
 
 interface Sorting {

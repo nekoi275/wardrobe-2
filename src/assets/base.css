@@ -7,12 +7,15 @@
   --text-light-color: #eff5fa;
   --section-gap: 160px;
   --ms-tag-bg: #484757;
+  --ms-font-size: 15px;
   --ms-dropdown-bg: #eff5fa;
   --ms-dropdown-border-color: #484757;
   --ms-option-bg-pointed: #9da8c0;
   --ms-border-color: #9da8c0;
   --ms-border-color-active: #9da8c0;
   --ms-ring-color: #9da8c0;
+  --ms-option-bg-selected: #484757;
+  --ms-option-bg-selected-pointed: #484757;
   --toggle-bg-on: #484757;
   --toggle-border-on: #9da8c0;
   --toggle-width: 100px;

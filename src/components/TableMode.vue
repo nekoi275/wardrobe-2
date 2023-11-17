@@ -22,7 +22,6 @@ function remove(row: ClothesInfo) {
 function moveToOld(row: ClothesInfo) {
   return row
 }
-/* TODO: add tooltips to icons */
 </script>
 
 <template>
@@ -46,10 +45,10 @@ function moveToOld(row: ClothesInfo) {
         <td>{{ row.year }}</td>
         <td v-if="row.season">{{ row.season }}</td>
         <td>
-          <V-icon name="fa-image" @click="$emit('openImage')"/>
-          <V-icon name="fa-edit" @click="$emit('openForm', row)"/>
-          <V-icon name="fa-trash-alt" @click="remove(row)"/>
-          <V-icon v-if="!row.isOld" name="fa-share-square" @click="moveToOld(row)"/>
+          <V-icon name="fa-image" @click="$emit('openImage')" title="Open photo"/>
+          <V-icon name="fa-edit" @click="$emit('openForm', row)" title="Edit entry"/>
+          <V-icon name="fa-trash-alt" @click="remove(row)" title="Remove entry"/>
+          <V-icon v-if="!row.isOld" name="fa-share-square" @click="moveToOld(row)" title="Move entry to old"/>
         </td>
       </tr>
     </tbody>

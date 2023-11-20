@@ -1,28 +1,55 @@
 import { defineStore } from 'pinia'
-import { credentials } from '../../apicreds'
-import img from '@/assets/default_image.jpg'
+import { ref, computed } from 'vue'
+import router from '@/router'
 
 export const useApiStore = defineStore('api', () => {
-  const url = credentials().url
-  const apiKey = credentials().apiKey
-  const requestConfig = {
-    headers: {
-      'x-apikey': apiKey
+  const url = 'https://wardrobe-manager.denias.workers.dev/'
+  const userName = ref('')
+  const password = ref('')
+  const isLoggedIn = ref(false)
+  const requestConfig = computed(() => {
+    return {
+      headers: {
+        Authorization: `Basic ${btoa(`${userName.value}:${password.value}`)}`
+      }
     }
+  })
+
+  function login() {
+    return fetch(url, requestConfig.value).then((response) => {
+      if (response.ok) {
+        isLoggedIn.value = true
+        router.push('/clothes')
+        return `Successfully logged in`
+      } else {
+        console.error('getting error.Status: ' + response.status)
+      }
+    })
   }
 
-  function getAll(tableName: string) {
-    return fetch(`${url}/rest/${tableName}?key=${apiKey}`, requestConfig).then((response) => {
+  function getClothes(callback: (response: any) => void) {
+    fetch(url, requestConfig.value).then((response) => {
       if (response.ok) {
         return response.json()
       } else {
         console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
       }
-    })
+    }).then(callback)
+    .catch((error: any) => console.error(error))
+  }
+  function getAccessories(callback: (response: any) => void) {
+    fetch(`${url}?category=accessories`, requestConfig.value).then((response) => {
+      if (response.ok) {
+        return response.json()
+      } else {
+        console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
+      }
+    }).then(callback)
+    .catch((error: any) => console.error(error))
   }
   function getImage() {
-    return img
+    return ''
   }
 
-  return { getAll, getImage }
+  return { userName, password, isLoggedIn, requestConfig, getClothes, getAccessories, getImage, login }
 })

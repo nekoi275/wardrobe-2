@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { useApiStore } from '@/stores/api'
+
+const api = useApiStore()
 </script>
 
 <template>
-  <header>
+  <header v-if="api.isLoggedIn">
     <nav>
       <RouterLink to="/clothes">Clothes</RouterLink>
       <RouterLink to="/accessories">Accessories</RouterLink>

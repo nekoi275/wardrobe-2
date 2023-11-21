@@ -15,22 +15,22 @@ function getColor(event: Event) {
   } */
   return event
 }
-function submit() {}
 function close() {
   formStore.isOpen = false
   formStore.formData = {
-    _id: '',
+    id: '',
     type: '',
     color: '',
     description: '',
     price: 0,
-    year: 0,
+    year: new Date().getFullYear(),
     image: '',
     isOld: false
   }
 }
 
-// TODO: form validation message
+//TODO: form validation message
+//TODO: colorpicker
 </script>
 
 <template>
@@ -83,7 +83,7 @@ function close() {
         <label class="color-label" v-show="formStore.previewImage">
           <canvas id="preview" width="200" height="200" @click="getColor"></canvas>
         </label>
-        <button @click="submit()" type="button">Submit</button>
+        <button @click="$emit('submit')" type="button">Submit</button>
       </form>
     </div>
   </div>

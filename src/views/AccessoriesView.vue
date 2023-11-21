@@ -25,9 +25,43 @@ function openImage() {
   imageStore.imageUrl = api.getImage()
   imageStore.isOpen = true
 }
-function openForm(row: ClothesInfo) {
-  formStore.isOpen = true
-  formStore.formData = row
+function openForm(row?: ClothesInfo) {
+  if (row) {
+    formStore.isOpen = true
+    formStore.formData = row
+  } else {
+    formStore.isOpen = true
+    formStore.formData.year = new Date().getFullYear()
+  }
+}
+function submit() {
+  api.create(
+    (response) => {
+      api.getOne(
+        () => {
+          tableStore.accessories.push(response)
+          tableStore.current.rows.push(response)
+          applyFilters()
+        },
+        'accessories',
+        response.id
+      )
+
+      formStore.isOpen = false
+      formStore.formData = {
+        id: '',
+        type: '',
+        color: '',
+        description: '',
+        price: 0,
+        year: 0,
+        image: '',
+        isOld: false
+      }
+    },
+    formStore.formData,
+    'accessories'
+  )
 }
 </script>
 
@@ -35,8 +69,8 @@ function openForm(row: ClothesInfo) {
   <TableMode v-if="!sidebarStore.cardsView" @openImage="openImage" @openForm="openForm"></TableMode>
   <SettingsSidebar @selected="applyFilters()" @deselected="applyFilters()"></SettingsSidebar>
   <ImageModal></ImageModal>
-  <ModalForm></ModalForm>
-  <button @click="formStore.isOpen = true">Add</button>
+  <ModalForm @submit="submit"></ModalForm>
+  <button @click="openForm()">Add</button>
   <CardsMode v-if="sidebarStore.cardsView" @openForm="openForm"></CardsMode>
 </template>
 

@@ -46,32 +46,18 @@ router.beforeEach((to) => {
   if (!api.isLoggedIn && to.name !== 'login') {
     return { name: 'login' }
   }
-  if (to.name === 'clothes') {
-    tableStore.updateHeaders(tableStore.headers.clothes)
-    if (tableStore.clothes.length == 0) {
-      api.getClothes((response: any) => {
-        tableStore.clothes = [...response]
-        tableStore.current.rows = [...tableStore.clothes.filter((item) => !item.isOld)]
+  if (to.name === 'clothes' || to.name === 'accessories') {
+    const tableName = to.name
+    tableStore.updateHeaders(tableStore.headers[tableName])
+    if (tableStore[tableName].length == 0) {
+      api.get((response: any) => {
+        tableStore[tableName] = [...response]
+        tableStore.current.rows = [...tableStore[tableName].filter((item) => !item.isOld)]
         sidebarStore.getFilters(tableStore.current)
         tableStore.filtered = tableStore.current.rows
-      })
+      }, tableName)
     } else {
-      tableStore.current.rows = [...tableStore.clothes.filter((item) => !item.isOld)]
-      sidebarStore.getFilters(tableStore.current)
-      tableStore.filtered = tableStore.current.rows
-    }
-  }
-  if (to.name === 'accessories') {
-    tableStore.updateHeaders(tableStore.headers.accessories)
-    if (tableStore.accessories.length == 0) {
-      api.getAccessories((response: any) => {
-        tableStore.accessories = [...response]
-        tableStore.current.rows = [...tableStore.accessories.filter((item) => !item.isOld)]
-        sidebarStore.getFilters(tableStore.current)
-        tableStore.filtered = tableStore.current.rows
-      })
-    } else {
-      tableStore.current.rows = [...tableStore.accessories.filter((item) => !item.isOld)]
+      tableStore.current.rows = [...tableStore[tableName].filter((item) => !item.isOld)]
       sidebarStore.getFilters(tableStore.current)
       tableStore.filtered = tableStore.current.rows
     }
@@ -80,7 +66,7 @@ router.beforeEach((to) => {
     tableStore.updateHeaders(tableStore.headers.old)
     tableStore.current.rows = []
     if (tableStore.clothes.length == 0) {
-      api.getClothes((response: any) => {
+      api.get((response: any) => {
         tableStore.clothes = [...response]
         tableStore.current.rows.push(...tableStore.clothes.filter((item) => item.isOld))
         sidebarStore.getFilters(tableStore.current)
@@ -92,12 +78,12 @@ router.beforeEach((to) => {
       tableStore.filtered = tableStore.current.rows
     }
     if (tableStore.accessories.length == 0) {
-      api.getAccessories((response: any) => {
+      api.get((response: any) => {
         tableStore.accessories = [...response]
         tableStore.current.rows.push(...tableStore.accessories.filter((item) => item.isOld))
         sidebarStore.getFilters(tableStore.current)
         tableStore.filtered = tableStore.current.rows
-      })
+      }, 'accessories')
     } else {
       tableStore.current.rows.push(...tableStore.accessories.filter((item) => item.isOld))
       sidebarStore.getFilters(tableStore.current)

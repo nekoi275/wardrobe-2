@@ -1,21 +1,19 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { ClothesInfo } from './interfaces'
 
 export const useFormStore = defineStore('form', () => {
   const isOpen = ref(false)
-  const formData = ref({
-    id: '',
-    type: '',
-    color: '',
-    description: '',
-    season: 'any',
-    price: 0,
-    year: 0,
-    image: '',
-    isOld: false
-  } as ClothesInfo)
+  const formData = ref({} as ClothesInfo)
   const previewImage = ref(false)
+  const isSubmitted = ref(false)
+  const isValid = computed(() => {
+    return (
+      formData.value.type != '' &&
+      formData.value.year != 0 &&
+      formData.value.color != ''
+    )
+  })
 
   function close() {
     isOpen.value = false
@@ -32,5 +30,6 @@ export const useFormStore = defineStore('form', () => {
     }
   }
 
-  return { isOpen, formData, previewImage, close }
+
+  return { isOpen, formData, previewImage, isValid, isSubmitted, close }
 })

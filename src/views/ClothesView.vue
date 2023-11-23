@@ -35,42 +35,47 @@ function openForm(row?: ClothesInfo) {
   }
 }
 function submit() {
-  if (formStore.formData.id) {
-    api.edit(
-      (response) => {
-        api.getOne(
-          () => {
-            tableStore.clothes.map((item) => (item.id !== response.id ? item : response))
-            tableStore.current.rows.map((item) => (item.id !== response.id ? item : response))
-            applyFilters()
-          },
-          'clothes',
-          response.id
-        )
-        formStore.close()
-      },
-      formStore.formData,
-      'clothes',
-      formStore.formData.id
-    )
-  } else {
-    api.create(
-      (response) => {
-        api.getOne(
-          () => {
-            tableStore.clothes.push(response)
-            tableStore.current.rows.push(response)
-            applyFilters()
-            tableStore.countTotal()
-          },
-          'clothes',
-          response.id
-        )
-        formStore.close()
-      },
-      formStore.formData,
-      'clothes'
-    )
+  formStore.isSubmitted = true
+  if (formStore.isValid) {
+    if (formStore.formData.id) {
+      api.edit(
+        (response) => {
+          api.getOne(
+            () => {
+              tableStore.clothes.map((item) => (item.id !== response.id ? item : response))
+              tableStore.current.rows.map((item) => (item.id !== response.id ? item : response))
+              applyFilters()
+              formStore.isSubmitted = false
+            },
+            'clothes',
+            response.id
+          )
+          formStore.close()
+        },
+        formStore.formData,
+        'clothes',
+        formStore.formData.id
+      )
+    } else {
+      api.create(
+        (response) => {
+          api.getOne(
+            () => {
+              tableStore.clothes.push(response)
+              tableStore.current.rows.push(response)
+              applyFilters()
+              formStore.isSubmitted = false
+              tableStore.countTotal()
+            },
+            'clothes',
+            response.id
+          )
+          formStore.close()
+        },
+        formStore.formData,
+        'clothes'
+      )
+    }
   }
 }
 function remove(id: string) {
@@ -120,7 +125,7 @@ function moveToOld(row: ClothesInfo) {
     @openForm="openForm"
     @remove="remove"
     @moveToOld="moveToOld"
-    :isOld = false
+    :isOld="false"
   ></TableMode>
   <SettingsSidebar @selected="applyFilters()" @deselected="applyFilters()"></SettingsSidebar>
   <ImageModal></ImageModal>

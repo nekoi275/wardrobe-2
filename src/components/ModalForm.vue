@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useFormStore } from '@/stores/form'
+import FormValidationMessage from '@/components/FormValidationMessage.vue'
 
 const formStore = useFormStore()
 const seasonOptions = ['winter', 'autumn/spring', 'summer', 'any']
@@ -15,9 +16,8 @@ function getColor(event: Event) {
   } */
   return event
 }
-//TODO: form validation message
 //TODO: colorpicker
-//TODO: separate form data from row
+//TODO: separate form data from row ???
 </script>
 
 <template>
@@ -27,6 +27,7 @@ function getColor(event: Event) {
       <V-icon name="fa-regular-window-close" @click="formStore.close()" />
       <form>
         <input type="hidden" v-model="formStore.formData._id" />
+        <FormValidationMessage v-show="formStore.formData.type == '' && formStore.isSubmitted"></FormValidationMessage>
         <label>
           <span>Type</span>
           <input type="text" v-model="formStore.formData.type" required />
@@ -39,6 +40,7 @@ function getColor(event: Event) {
           <span>Price</span>
           <input type="number" v-model.number="formStore.formData.price" />
         </label>
+        <FormValidationMessage v-show="formStore.formData.year == 0 && formStore.isSubmitted"></FormValidationMessage>
         <label>
           <span>Year</span>
           <input
@@ -61,11 +63,12 @@ function getColor(event: Event) {
         </label>
         <label>
           <span>Photo</span>
-          <input type="file" accept="image/png, image/jpeg, image/webp" />
+          <input type="file" accept="image/png, image/jpeg, image/webp" required/>
         </label>
+        <FormValidationMessage v-show="formStore.formData.color == '' && formStore.isSubmitted"></FormValidationMessage>
         <label>
           <span>Color</span>
-          <input type="text" v-model="formStore.formData.color" />
+          <input type="text" v-model="formStore.formData.color" required/>
         </label>
         <label class="color-label" v-show="formStore.previewImage">
           <canvas id="preview" width="200" height="200" @click="getColor"></canvas>

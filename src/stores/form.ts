@@ -16,5 +16,19 @@ export const useFormStore = defineStore('form', () => {
   } as ClothesInfo)
   const previewImage = ref(false)
 
-  return { isOpen, formData, previewImage }
+  function close() {
+    isOpen.value = false
+    formData.value = {
+      id: '',
+      type: '',
+      color: '',
+      description: '',
+      price: 0,
+      year: new Date().getFullYear(),
+      image: '',
+      isOld: false
+    }
+  }
+
+  return { isOpen, formData, previewImage, close }
 })

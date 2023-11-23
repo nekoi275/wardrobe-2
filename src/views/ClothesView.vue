@@ -35,39 +35,66 @@ function openForm(row?: ClothesInfo) {
   }
 }
 function submit() {
-  api.create(
-    (response) => {
-      api.getOne(
-        () => {
-          tableStore.clothes.push(response)
-          tableStore.current.rows.push(response)
-          applyFilters()
-        },
-        'clothes',
-        response.id
-      )
-
-      formStore.isOpen = false
-      formStore.formData = {
-        id: '',
-        type: '',
-        color: '',
-        description: '',
-        price: 0,
-        year: 0,
-        image: '',
-        season: '',
-        isOld: false
-      }
+  if (formStore.formData.id) {
+    api.edit(
+      (response) => {
+        api.getOne(
+          () => {
+            tableStore.clothes.map((item) => (item.id !== response.id ? item : response))
+            tableStore.current.rows.map((item) => (item.id !== response.id ? item : response))
+            applyFilters()
+          },
+          'clothes',
+          response.id
+        )
+        formStore.close()
+      },
+      formStore.formData,
+      'clothes',
+      formStore.formData.id
+    )
+  } else {
+    api.create(
+      (response) => {
+        api.getOne(
+          () => {
+            tableStore.clothes.push(response)
+            tableStore.current.rows.push(response)
+            applyFilters()
+          },
+          'clothes',
+          response.id
+        )
+        formStore.close()
+      },
+      formStore.formData,
+      'clothes'
+    )
+  }
+}
+function remove(id: string) {
+  api.remove(
+    () => {
+      api.get((response: any) => {
+        tableStore.clothes = [...response]
+        tableStore.current.rows = [...tableStore.clothes.filter((item) => !item.isOld)]
+        sidebarStore.getFilters(tableStore.current)
+        applyFilters()
+      })
     },
-    formStore.formData,
-    'clothes'
+    'clothes',
+    id
   )
 }
 </script>
 
 <template>
-  <TableMode v-if="!sidebarStore.cardsView" @openImage="openImage" @openForm="openForm"></TableMode>
+  <TableMode
+    v-if="!sidebarStore.cardsView"
+    @openImage="openImage"
+    @openForm="openForm"
+    @remove="remove"
+  ></TableMode>
   <SettingsSidebar @selected="applyFilters()" @deselected="applyFilters()"></SettingsSidebar>
   <ImageModal></ImageModal>
   <ModalForm @submit="submit"></ModalForm>

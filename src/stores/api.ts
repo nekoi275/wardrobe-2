@@ -16,6 +16,7 @@ export const useApiStore = defineStore('api', () => {
       }
     }
   })
+  //TODO: cache login credentials
   function login() {
     return fetch(baseUrl, requestConfig.value).then((response) => {
       if (response.ok) {
@@ -71,6 +72,42 @@ export const useApiStore = defineStore('api', () => {
       .then(callback)
       .catch((error: any) => console.error(error))
   }
+  function edit(
+    callback: (response: any) => void,
+    data: ClothesInfo,
+    category: string,
+    id: string
+  ) {
+    fetch(`${baseUrl}?category=${category}&id=${id}`, {
+      ...requestConfig.value,
+      method: 'PUT',
+      body: JSON.stringify(data)
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
+        }
+      })
+      .then(callback)
+      .catch((error: any) => console.error(error))
+  }
+  function remove(callback: (response: any) => void, category: string, id: string) {
+    fetch(`${baseUrl}?category=${category}&id=${id}`, {
+      ...requestConfig.value,
+      method: 'DELETE'
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response
+        } else {
+          console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
+        }
+      })
+      .then(callback)
+      .catch((error: any) => console.error(error))
+  }
 
   return {
     userName,
@@ -80,6 +117,8 @@ export const useApiStore = defineStore('api', () => {
     get,
     getOne,
     getImage,
-    create
+    create,
+    edit,
+    remove
   }
 })

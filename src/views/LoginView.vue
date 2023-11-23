@@ -5,6 +5,9 @@ const api = useApiStore()
 </script>
 
 <template>
+<div class="overlay"></div>
+<div class="background"></div>
+<div class="container">
   <form v-if="!api.isLoggedIn">
     <label>
       User Name
@@ -16,11 +19,38 @@ const api = useApiStore()
     </label>
     <button @click="api.login()" type="button">Log in</button>
   </form>
+</div>
 </template>
 
 <style scoped>
+.background {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-image: url('@/assets/cloakroom.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+}
+.overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: var(--main-light-color);
+}
+.container {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
 form {
-  margin: 100px auto;
   display: block;
   width: 300px;
   background-color: var(--main-dark-color);
@@ -28,6 +58,7 @@ form {
   border-radius: 3px;
   text-align: right;
   color: var(--text-light-color);
+  opacity: 1;
 }
 label {
     display: block;

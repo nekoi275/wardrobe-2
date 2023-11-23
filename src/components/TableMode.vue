@@ -16,9 +16,6 @@ function sort(field: string) {
   setSorting(field);
   tableStore.sort();
 }
-function remove(row: ClothesInfo) {
-  return row
-}
 function moveToOld(row: ClothesInfo) {
   return row
 }
@@ -47,7 +44,7 @@ function moveToOld(row: ClothesInfo) {
         <td>
           <V-icon name="fa-image" @click="$emit('openImage')" title="Open photo"/>
           <V-icon name="fa-edit" @click="$emit('openForm', row)" title="Edit entry"/>
-          <V-icon name="fa-trash-alt" @click="remove(row)" title="Remove entry"/>
+          <V-icon name="fa-trash-alt" @click="$emit('remove', row.id)" title="Remove entry"/>
           <V-icon v-if="!row.isOld" name="fa-share-square" @click="moveToOld(row)" title="Move entry to old"/>
         </td>
       </tr>

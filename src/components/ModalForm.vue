@@ -15,29 +15,16 @@ function getColor(event: Event) {
   } */
   return event
 }
-function close() {
-  formStore.isOpen = false
-  formStore.formData = {
-    id: '',
-    type: '',
-    color: '',
-    description: '',
-    price: 0,
-    year: new Date().getFullYear(),
-    image: '',
-    isOld: false
-  }
-}
-
 //TODO: form validation message
 //TODO: colorpicker
+//TODO: separate form data from row
 </script>
 
 <template>
   <div class="container" v-show="formStore.isOpen">
-    <div class="overlay" @click="close()"></div>
+    <div class="overlay" @click="formStore.close()"></div>
     <div class="modal">
-      <V-icon name="fa-regular-window-close" @click="close()" />
+      <V-icon name="fa-regular-window-close" @click="formStore.close()" />
       <form>
         <input type="hidden" v-model="formStore.formData._id" />
         <label>

@@ -35,38 +35,87 @@ function openForm(row?: ClothesInfo) {
   }
 }
 function submit() {
-  api.create(
+  if (formStore.formData.id) {
+    api.edit(
+      (response) => {
+        api.getOne(
+          () => {
+            tableStore.accessories.map((item) => (item.id !== response.id ? item : response))
+            tableStore.current.rows.map((item) => (item.id !== response.id ? item : response))
+            applyFilters()
+          },
+          'accessories',
+          response.id
+        )
+        formStore.close()
+      },
+      formStore.formData,
+      'accessories',
+      formStore.formData.id
+    )
+  } else {
+    api.create(
+      (response) => {
+        api.getOne(
+          () => {
+            tableStore.accessories.push(response)
+            tableStore.current.rows.push(response)
+            applyFilters()
+          },
+          'accessories',
+          response.id
+        )
+        formStore.close()
+      },
+      formStore.formData,
+      'accessories'
+    )
+  }
+}
+function remove(id: string) {
+  api.remove(
+    () => {
+      api.get((response: any) => {
+        tableStore.accessories = [...response]
+        tableStore.current.rows = [...tableStore.accessories.filter((item) => !item.isOld)]
+        sidebarStore.getFilters(tableStore.current)
+        applyFilters()
+      }, 'accessories')
+    },
+    'accessories',
+    id
+  )
+}
+function moveToOld(row: ClothesInfo) {
+  row.isOld = true
+  api.edit(
     (response) => {
       api.getOne(
         () => {
-          tableStore.accessories.push(response)
-          tableStore.current.rows.push(response)
+          tableStore.accessories.map((item) => (item.id !== response.id ? item : response))
+          tableStore.current.rows = [...tableStore.accessories.filter((item) => !item.isOld)]
           applyFilters()
         },
         'accessories',
         response.id
       )
-
-      formStore.isOpen = false
-      formStore.formData = {
-        id: '',
-        type: '',
-        color: '',
-        description: '',
-        price: 0,
-        year: 0,
-        image: '',
-        isOld: false
-      }
+      formStore.close()
     },
-    formStore.formData,
-    'accessories'
+    row,
+    'accessories',
+    row.id
   )
 }
 </script>
 
 <template>
-  <TableMode v-if="!sidebarStore.cardsView" @openImage="openImage" @openForm="openForm"></TableMode>
+  <TableMode
+    v-if="!sidebarStore.cardsView"
+    @openImage="openImage"
+    @openForm="openForm"
+    @remove="remove"
+    @moveToOld="moveToOld"
+  ></TableMode>
   <SettingsSidebar @selected="applyFilters()" @deselected="applyFilters()"></SettingsSidebar>
   <ImageModal></ImageModal>
   <ModalForm @submit="submit"></ModalForm>

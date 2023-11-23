@@ -2,6 +2,9 @@
 import { useTableStore } from '@/stores/table'
 
 const tableStore = useTableStore()
+defineProps<{
+  isOld: boolean
+}>()
 
 function setSorting(field: string) {
   if (tableStore.sorting.field == field) {
@@ -41,7 +44,7 @@ function sort(field: string) {
           <V-icon name="fa-image" @click="$emit('openImage')" title="Open photo"/>
           <V-icon name="fa-edit" @click="$emit('openForm', row)" title="Edit entry"/>
           <V-icon name="fa-trash-alt" @click="$emit('remove', row.id)" title="Remove entry"/>
-          <V-icon v-if="!row.isOld" name="fa-share-square" @click="$emit('moveToOld', row)" title="Move entry to old"/>
+          <V-icon v-if="!isOld" name="fa-share-square" @click="$emit('moveToOld', row)" title="Move entry to old"/>
         </td>
       </tr>
     </tbody>

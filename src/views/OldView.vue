@@ -27,16 +27,61 @@ function openImage() {
 }
 function openForm(row: ClothesInfo) {
   formStore.isOpen = true
-  formStore.formData = row
+  formStore.formData = { ...row }
+}
+function submit() {
+  api.edit(
+    (response) => {
+      api.getOne(
+        () => {
+          tableStore.accessories.map((item) => (item.id !== response.id ? item : response))
+          tableStore.current.rows.map((item) => (item.id !== response.id ? item : response))
+          applyFilters()
+        },
+        'old',
+        response.id
+      )
+      formStore.close()
+    },
+    formStore.formData,
+    'old',
+    formStore.formData.id
+  )
+}
+function remove(id: string) {
+  api.remove(
+    () => {
+      api.get((response: any) => {
+        tableStore.accessories = [...response]
+        tableStore.current.rows = [...tableStore.accessories.filter((item) => !item.isOld)]
+        sidebarStore.getFilters(tableStore.current)
+        applyFilters()
+        tableStore.countTotal()
+      }, 'old')
+    },
+    'old',
+    id
+  )
 }
 </script>
 
 <template>
-  <TableMode v-if="!sidebarStore.cardsView" @openImage="openImage" @openForm="openForm"></TableMode>
+  <TableMode
+    v-if="!sidebarStore.cardsView"
+    @openImage="openImage"
+    @openForm="openForm"
+    @remove="remove"
+    :isOld="true"
+  ></TableMode>
   <SettingsSidebar @selected="applyFilters()" @deselected="applyFilters()"></SettingsSidebar>
   <ImageModal></ImageModal>
-  <ModalForm></ModalForm>
-  <CardsMode v-if="sidebarStore.cardsView" @openForm="openForm"></CardsMode>
+  <ModalForm @submit="submit"></ModalForm>
+  <CardsMode
+    v-if="sidebarStore.cardsView"
+    @openForm="openForm"
+    @remove="remove"
+    :isOld="true"
+  ></CardsMode>
 </template>
 
 <style></style>

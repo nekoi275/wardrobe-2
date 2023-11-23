@@ -28,7 +28,7 @@ function openImage() {
 function openForm(row?: ClothesInfo) {
   if (row) {
     formStore.isOpen = true
-    formStore.formData = row
+    formStore.formData = {...row}
   } else {
     formStore.isOpen = true
     formStore.formData.year = new Date().getFullYear()
@@ -61,6 +61,7 @@ function submit() {
             tableStore.clothes.push(response)
             tableStore.current.rows.push(response)
             applyFilters()
+            tableStore.countTotal()
           },
           'clothes',
           response.id
@@ -80,30 +81,34 @@ function remove(id: string) {
         tableStore.current.rows = [...tableStore.clothes.filter((item) => !item.isOld)]
         sidebarStore.getFilters(tableStore.current)
         applyFilters()
-      })
+        tableStore.countTotal()
+      }, 'clothes')
     },
     'clothes',
     id
   )
 }
 function moveToOld(row: ClothesInfo) {
-  row.isOld = true
-  api.edit(
+  api.create(
     (response) => {
-      api.getOne(
+      api.remove(
         () => {
-          tableStore.clothes.map((item) => (item.id !== response.id ? item : response))
-          tableStore.current.rows = [...tableStore.clothes.filter((item) => !item.isOld)]
-          applyFilters()
+          api.get((response: any) => {
+            tableStore.clothes = [...response]
+            tableStore.current.rows = [...tableStore.clothes]
+            sidebarStore.getFilters(tableStore.current)
+            applyFilters()
+            tableStore.countTotal()
+          }, 'clothes')
         },
         'clothes',
-        response.id
+        row.id
       )
+      tableStore.old.push(response)
       formStore.close()
     },
     row,
-    'clothes',
-    row.id
+    'old'
   )
 }
 </script>
@@ -115,12 +120,19 @@ function moveToOld(row: ClothesInfo) {
     @openForm="openForm"
     @remove="remove"
     @moveToOld="moveToOld"
+    :isOld = false
   ></TableMode>
   <SettingsSidebar @selected="applyFilters()" @deselected="applyFilters()"></SettingsSidebar>
   <ImageModal></ImageModal>
   <ModalForm @submit="submit"></ModalForm>
   <button @click="openForm()">Add</button>
-  <CardsMode v-if="sidebarStore.cardsView" @openForm="openForm"></CardsMode>
+  <CardsMode
+    v-if="sidebarStore.cardsView"
+    @openForm="openForm"
+    @remove="remove"
+    @moveToOld="moveToOld"
+    :isOld="false"
+  ></CardsMode>
 </template>
 
 <style scoped>

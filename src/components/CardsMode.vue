@@ -3,12 +3,23 @@ import { useTableStore } from '@/stores/table'
 import ClothesCard from '@/components/ClothesCard.vue'
 
 const tableStore = useTableStore()
+defineProps<{
+  isOld: boolean
+}>()
 </script>
 
 <template>
   <div>
     <div class="cards-container">
-      <ClothesCard v-for="row in tableStore.filtered" :key="row.id" :row="row" @openForm="$emit('openForm', row)"></ClothesCard>
+      <ClothesCard
+        v-for="row in tableStore.filtered"
+        :key="row.id"
+        :row="row"
+        @openForm="$emit('openForm', row)"
+        @remove="$emit('remove', row.id)"
+        @click="$emit('moveToOld', row)"
+        :isOld="isOld"
+      ></ClothesCard>
     </div>
   </div>
 </template>

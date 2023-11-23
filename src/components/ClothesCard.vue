@@ -4,16 +4,10 @@ import img from '@/assets/default_image.jpg'
 import type { ClothesInfo } from '@/stores/interfaces'
 
 defineProps<{
-  row: ClothesInfo
+  row: ClothesInfo,
+  isOld: boolean
 }>()
 const tableStore = useTableStore()
-
-function remove(row: ClothesInfo) {
-  return row
-}
-function moveToOld(row: ClothesInfo) {
-  return row
-}
 </script>
 
 <template>
@@ -28,8 +22,8 @@ function moveToOld(row: ClothesInfo) {
     </table>
     <footer>
       <V-icon name="fa-edit" @click="$emit('openForm', row)" title="Edit entry"/>
-      <V-icon name="fa-trash-alt" @click="remove(row)" title="Remove entry"/>
-      <V-icon v-if="!row.isOld" name="fa-share-square" @click="moveToOld(row)" title="Move entry to old"/>
+      <V-icon name="fa-trash-alt" @click="$emit('remove', row.id)" title="Remove entry"/>
+      <V-icon v-if="!isOld" name="fa-share-square" @click="$emit('moveToOld', row)" title="Move entry to old"/>
     </footer>
   </div>
 </template>

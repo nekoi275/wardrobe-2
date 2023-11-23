@@ -18,7 +18,7 @@ export const useApiStore = defineStore('api', () => {
   })
   //TODO: cache login credentials
   function login() {
-    return fetch(baseUrl, requestConfig.value).then((response) => {
+    return fetch(`${baseUrl}?category=clothes`, requestConfig.value).then((response) => {
       if (response.ok) {
         isLoggedIn.value = true
         router.push('/clothes')
@@ -28,9 +28,8 @@ export const useApiStore = defineStore('api', () => {
       }
     })
   }
-  function get(callback: (response: any) => void, category?: string) {
-    const url = category === 'accessories' ? `${baseUrl}?category=${category}` : baseUrl
-    fetch(url, requestConfig.value)
+  function get(callback: (response: any) => void, category: string) {
+    fetch(`${baseUrl}?category=${category}`, requestConfig.value)
       .then((response) => {
         if (response.ok) {
           return response.json()

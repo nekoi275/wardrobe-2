@@ -46,48 +46,22 @@ router.beforeEach((to) => {
   if (!api.isLoggedIn && to.name !== 'login') {
     return { name: 'login' }
   }
-  if (to.name === 'clothes' || to.name === 'accessories') {
+  if (to.name === 'clothes' || to.name === 'accessories' || to.name === 'old') {
     const tableName = to.name
     tableStore.updateHeaders(tableStore.headers[tableName])
     if (tableStore[tableName].length == 0) {
       api.get((response: any) => {
         tableStore[tableName] = [...response]
-        tableStore.current.rows = [...tableStore[tableName].filter((item) => !item.isOld)]
+        tableStore.current.rows = [...tableStore[tableName]]
         sidebarStore.getFilters(tableStore.current)
         tableStore.filtered = tableStore.current.rows
+        tableStore.countTotal()
       }, tableName)
     } else {
-      tableStore.current.rows = [...tableStore[tableName].filter((item) => !item.isOld)]
+      tableStore.current.rows = [...tableStore[tableName]]
       sidebarStore.getFilters(tableStore.current)
       tableStore.filtered = tableStore.current.rows
-    }
-  }
-  if (to.name === 'old') {
-    tableStore.updateHeaders(tableStore.headers.old)
-    tableStore.current.rows = []
-    if (tableStore.clothes.length == 0) {
-      api.get((response: any) => {
-        tableStore.clothes = [...response]
-        tableStore.current.rows.push(...tableStore.clothes.filter((item) => item.isOld))
-        sidebarStore.getFilters(tableStore.current)
-        tableStore.filtered = tableStore.current.rows
-      })
-    } else {
-      tableStore.current.rows.push(...tableStore.clothes.filter((item) => item.isOld))
-      sidebarStore.getFilters(tableStore.current)
-      tableStore.filtered = tableStore.current.rows
-    }
-    if (tableStore.accessories.length == 0) {
-      api.get((response: any) => {
-        tableStore.accessories = [...response]
-        tableStore.current.rows.push(...tableStore.accessories.filter((item) => item.isOld))
-        sidebarStore.getFilters(tableStore.current)
-        tableStore.filtered = tableStore.current.rows
-      }, 'accessories')
-    } else {
-      tableStore.current.rows.push(...tableStore.accessories.filter((item) => item.isOld))
-      sidebarStore.getFilters(tableStore.current)
-      tableStore.filtered = tableStore.current.rows
+      tableStore.countTotal()
     }
   }
 })

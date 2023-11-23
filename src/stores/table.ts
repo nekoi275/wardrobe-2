@@ -5,6 +5,7 @@ import type { ClothesInfo, Header, CurrentTable } from './interfaces'
 export const useTableStore = defineStore('tables', () => {
   const clothes = ref([] as ClothesInfo[])
   const accessories = ref([] as ClothesInfo[])
+  const old = ref([] as ClothesInfo[])
   const current = ref({} as CurrentTable)
   const sorting = ref({} as Sorting)
   const filtered = ref([] as ClothesInfo[])
@@ -34,7 +35,6 @@ export const useTableStore = defineStore('tables', () => {
       { name: 'season', displayName: 'SEASON', isFilter: true }
     ]
   }
-
   function sort() {
     return current.value.rows.sort((item1: ClothesInfo, item2: ClothesInfo) => {
       const field = sorting.value.field
@@ -54,11 +54,11 @@ export const useTableStore = defineStore('tables', () => {
   function updateHeaders(headers: Header[]) {
     current.value.headers = headers
   }
-  function calculateTotalAmount() {
+  function countTotal() {
     totalAmount.value = current.value.rows.length
   }
 
-  return { clothes, accessories, current, sorting, filtered, totalAmount, headers, sort, updateHeaders, calculateTotalAmount }
+  return { clothes, accessories, old, current, sorting, filtered, totalAmount, headers, sort, updateHeaders, countTotal }
 })
 
 interface Sorting {

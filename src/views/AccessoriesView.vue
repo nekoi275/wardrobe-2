@@ -28,7 +28,7 @@ function openImage() {
 function openForm(row?: ClothesInfo) {
   if (row) {
     formStore.isOpen = true
-    formStore.formData = {...row}
+    formStore.formData = row
   } else {
     formStore.isOpen = true
     formStore.formData.year = new Date().getFullYear()

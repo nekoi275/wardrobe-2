@@ -27,7 +27,7 @@ function openImage() {
 }
 function openForm(row: ClothesInfo) {
   formStore.isOpen = true
-  formStore.formData = { ...row }
+  formStore.formData = row
 }
 function submit() {
   api.edit(

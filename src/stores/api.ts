@@ -16,7 +16,6 @@ export const useApiStore = defineStore('api', () => {
       }
     }
   })
-  //TODO: cache login credentials
   function login() {
     return fetch(`${baseUrl}?category=clothes`, requestConfig.value).then((response) => {
       if (response.ok) {

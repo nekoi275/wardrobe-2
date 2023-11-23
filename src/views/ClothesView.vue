@@ -86,6 +86,26 @@ function remove(id: string) {
     id
   )
 }
+function moveToOld(row: ClothesInfo) {
+  row.isOld = true
+  api.edit(
+    (response) => {
+      api.getOne(
+        () => {
+          tableStore.clothes.map((item) => (item.id !== response.id ? item : response))
+          tableStore.current.rows = [...tableStore.clothes.filter((item) => !item.isOld)]
+          applyFilters()
+        },
+        'clothes',
+        response.id
+      )
+      formStore.close()
+    },
+    row,
+    'clothes',
+    row.id
+  )
+}
 </script>
 
 <template>
@@ -94,6 +114,7 @@ function remove(id: string) {
     @openImage="openImage"
     @openForm="openForm"
     @remove="remove"
+    @moveToOld="moveToOld"
   ></TableMode>
   <SettingsSidebar @selected="applyFilters()" @deselected="applyFilters()"></SettingsSidebar>
   <ImageModal></ImageModal>

@@ -23,6 +23,7 @@ export const useFormStore = defineStore('form', () => {
       type: '',
       color: '',
       description: '',
+      season: 'any',
       price: 0,
       year: new Date().getFullYear(),
       image: '',

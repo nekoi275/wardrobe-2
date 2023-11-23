@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useTableStore } from '@/stores/table'
-import type { ClothesInfo } from '@/stores/interfaces'
 
 const tableStore = useTableStore()
 
@@ -15,9 +14,6 @@ function setSorting(field: string) {
 function sort(field: string) {
   setSorting(field);
   tableStore.sort();
-}
-function moveToOld(row: ClothesInfo) {
-  return row
 }
 </script>
 
@@ -40,12 +36,12 @@ function moveToOld(row: ClothesInfo) {
         <td>{{ row.description }}</td>
         <td>{{ row.price }}</td>
         <td>{{ row.year }}</td>
-        <td v-if="row.season">{{ row.season }}</td>
+        <td v-if="tableStore.current.headers.some(el => el.name === 'season')">{{ row.season }}</td>
         <td>
           <V-icon name="fa-image" @click="$emit('openImage')" title="Open photo"/>
           <V-icon name="fa-edit" @click="$emit('openForm', row)" title="Edit entry"/>
           <V-icon name="fa-trash-alt" @click="$emit('remove', row.id)" title="Remove entry"/>
-          <V-icon v-if="!row.isOld" name="fa-share-square" @click="moveToOld(row)" title="Move entry to old"/>
+          <V-icon v-if="!row.isOld" name="fa-share-square" @click="$emit('moveToOld', row)" title="Move entry to old"/>
         </td>
       </tr>
     </tbody>

@@ -2,7 +2,7 @@
 import { useFormStore } from '@/stores/form'
 
 const formStore = useFormStore()
-const seasonOptions = ['winter', 'autumn/spring', 'summer']
+const seasonOptions = ['winter', 'autumn/spring', 'summer', 'any']
 
 function getColor(event: Event) {
   /*   const canvas: HTMLCanvasElement = document.getElementById('preview')

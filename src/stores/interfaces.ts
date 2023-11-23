@@ -4,7 +4,7 @@ interface ClothesInfo {
   description?: string
   price: number
   year: number
-  season?: string
+  season: string
   id: string
   image: string
   isOld: boolean

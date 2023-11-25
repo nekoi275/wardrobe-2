@@ -1,6 +1,6 @@
 <template>
   <span class="required-msg"
-    >Это поле обязательное</span>
+    >This field is required</span>
 </template>
 
 <style scoped>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useSidebarStore } from '@/stores/sidebar'
+import ColorCheckbox from '@/components/ColorCheckbox.vue'
 
 const sidebarStore = useSidebarStore()
 
@@ -18,6 +19,7 @@ function closeSidebar() {
     <div v-for="filter in sidebarStore.availableFilters.filters" :key="filter.name">
       <span>{{ filter.displayName }}</span>
       <Multi-select
+        v-if="filter.name !== 'color'"
         :options="sidebarStore.availableFilters.options[filter.name]"
         mode="tags"
         :searchable="true"
@@ -27,10 +29,15 @@ function closeSidebar() {
         @deselect="$emit('deselected')"
       >
       </Multi-select>
+      <div class="colors-container" v-else>
+        <ColorCheckbox
+          v-for="option in sidebarStore.availableFilters.options.color"
+          :key="option"
+          :option="option"
+        ></ColorCheckbox>
+      </div>
     </div>
-    <V-toggle :offLabel="'Table'" 
-    :onLabel="'Cards'"
-    v-model="sidebarStore.cardsView"></V-toggle>
+    <V-toggle :offLabel="'Table'" :onLabel="'Cards'" v-model="sidebarStore.cardsView"></V-toggle>
   </aside>
 </template>
 
@@ -66,5 +73,12 @@ span {
 .toggle-container {
   margin-top: 30px;
   box-shadow: none;
+}
+.colors-container {
+  display: flex;
+  margin-bottom: 40px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 </style>

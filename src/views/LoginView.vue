@@ -15,7 +15,7 @@ const api = useApiStore()
     </label>
     <label>
       Password
-      <input type="text" v-model="api.password" />
+      <input type="password" v-model="api.password" />
     </label>
     <button @click="api.login()" type="button">Log in</button>
   </form>

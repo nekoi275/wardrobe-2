@@ -49,16 +49,16 @@ router.beforeEach((to) => {
   if (to.name === 'clothes' || to.name === 'accessories' || to.name === 'old') {
     const tableName = to.name
     tableStore.updateHeaders(tableStore.headers[tableName])
-    if (tableStore[tableName].length == 0) {
+    if (tableStore[tableName] === undefined) {
       api.get((response: any) => {
-        tableStore[tableName] = [...response]
-        tableStore.current.rows = [...tableStore[tableName]]
+        tableStore[tableName] = response
+        tableStore.current.rows = tableStore[tableName]!
         sidebarStore.getFilters(tableStore.current)
         tableStore.filtered = tableStore.current.rows
         tableStore.countTotal()
       }, tableName)
     } else {
-      tableStore.current.rows = [...tableStore[tableName]]
+      tableStore.current.rows = tableStore[tableName]!
       sidebarStore.getFilters(tableStore.current)
       tableStore.filtered = tableStore.current.rows
       tableStore.countTotal()

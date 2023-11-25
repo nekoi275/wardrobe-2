@@ -36,6 +36,7 @@ function submit() {
         () => {
           tableStore.accessories.map((item) => (item.id !== response.id ? item : response))
           tableStore.current.rows.map((item) => (item.id !== response.id ? item : response))
+          sidebarStore.getFilters(tableStore.current)
           applyFilters()
           formStore.isSubmitted = false
         },

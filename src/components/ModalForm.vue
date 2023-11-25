@@ -6,15 +6,13 @@ const formStore = useFormStore()
 const seasonOptions = ['winter', 'autumn/spring', 'summer', 'any']
 
 function getColor(event: Event) {
-  /*   const canvas: HTMLCanvasElement = document.getElementById('preview')
-  if (canvas) {
-    const ctx: CanvasRenderingContext2D = canvas.getContext('2d')
-    let x = event.offsetX
-    let y = event.offsetY
-    let imageData = ctx.getImageData(x, y, 1, 1).data
-    formStore.formData.color = `rgb(${imageData[0]},${imageData[1]},${imageData[2]})`
-  } */
-  return event
+/*   const canvas: HTMLCanvasElement = document.getElementById('preview')
+  const ctx: CanvasRenderingContext2D = canvas.getContext('2d')!
+  let x = event.offsetX
+  let y = event.offsetY
+  let imageData = ctx.getImageData(x, y, 1, 1).data
+  formStore.formData.color = `rgb(${imageData[0]},${imageData[1]},${imageData[2]})`
+  return event */
 }
 //TODO: colorpicker
 //TODO: separate form data from row ???
@@ -27,7 +25,9 @@ function getColor(event: Event) {
       <V-icon name="fa-regular-window-close" @click="formStore.close()" />
       <form>
         <input type="hidden" v-model="formStore.formData._id" />
-        <FormValidationMessage v-show="formStore.formData.type == '' && formStore.isSubmitted"></FormValidationMessage>
+        <FormValidationMessage
+          v-show="formStore.formData.type == '' && formStore.isSubmitted"
+        ></FormValidationMessage>
         <label>
           <span>Type</span>
           <input type="text" v-model="formStore.formData.type" required />
@@ -40,7 +40,9 @@ function getColor(event: Event) {
           <span>Price</span>
           <input type="number" v-model.number="formStore.formData.price" />
         </label>
-        <FormValidationMessage v-show="formStore.formData.year == 0 && formStore.isSubmitted"></FormValidationMessage>
+        <FormValidationMessage
+          v-show="formStore.formData.year == 0 && formStore.isSubmitted"
+        ></FormValidationMessage>
         <label>
           <span>Year</span>
           <input
@@ -63,12 +65,14 @@ function getColor(event: Event) {
         </label>
         <label>
           <span>Photo</span>
-          <input type="file" accept="image/png, image/jpeg, image/webp" required/>
+          <input type="file" accept="image/png, image/jpeg, image/webp" required />
         </label>
-        <FormValidationMessage v-show="formStore.formData.color == '' && formStore.isSubmitted"></FormValidationMessage>
+        <FormValidationMessage
+          v-show="formStore.formData.color == '' && formStore.isSubmitted"
+        ></FormValidationMessage>
         <label>
           <span>Color</span>
-          <input type="text" v-model="formStore.formData.color" required/>
+          <input type="text" v-model="formStore.formData.color" required />
         </label>
         <label class="color-label" v-show="formStore.previewImage">
           <canvas id="preview" width="200" height="200" @click="getColor"></canvas>
@@ -115,7 +119,8 @@ label {
   width: 100%;
   justify-content: flex-end;
 }
-input, .multiselect{
+input,
+.multiselect {
   box-sizing: border-box;
   padding: 11px;
   padding-left: 13px;

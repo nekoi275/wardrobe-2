@@ -32,6 +32,7 @@ function openForm(row?: ClothesInfo) {
   } else {
     formStore.isOpen = true
     formStore.formData.year = new Date().getFullYear()
+    formStore.formData.season = 'any'
   }
 }
 function submit() {
@@ -44,6 +45,7 @@ function submit() {
             () => {
               tableStore.accessories.map((item) => (item.id !== response.id ? item : response))
               tableStore.current.rows.map((item) => (item.id !== response.id ? item : response))
+              sidebarStore.getFilters(tableStore.current)
               applyFilters()
               formStore.isSubmitted = false
             },
@@ -63,6 +65,7 @@ function submit() {
             () => {
               tableStore.accessories.push(response)
               tableStore.current.rows.push(response)
+              sidebarStore.getFilters(tableStore.current)
               applyFilters()
               formStore.isSubmitted = false
               tableStore.countTotal()

@@ -3,9 +3,9 @@ import { defineStore } from 'pinia'
 import type { ClothesInfo, Header, CurrentTable } from './interfaces'
 
 export const useTableStore = defineStore('tables', () => {
-  const clothes = ref([] as ClothesInfo[])
-  const accessories = ref([] as ClothesInfo[])
-  const old = ref([] as ClothesInfo[])
+  const clothes = ref(undefined as ClothesInfo[] | undefined)
+  const accessories = ref(undefined as ClothesInfo[] | undefined)
+  const old = ref(undefined as ClothesInfo[] | undefined)
   const current = ref({} as CurrentTable)
   const sorting = ref({} as Sorting)
   const filtered = ref([] as ClothesInfo[])

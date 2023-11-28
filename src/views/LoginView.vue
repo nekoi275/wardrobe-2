@@ -2,6 +2,7 @@
 import { useApiStore } from '@/stores/api'
 
 const api = useApiStore()
+//TODO: validation message
 </script>
 
 <template>

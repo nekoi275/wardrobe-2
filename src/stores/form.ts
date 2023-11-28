@@ -5,8 +5,8 @@ import type { ClothesInfo } from './interfaces'
 export const useFormStore = defineStore('form', () => {
   const isOpen = ref(false)
   const formData = ref({} as ClothesInfo)
-  const previewImage = ref(false)
   const isSubmitted = ref(false)
+  const previewImage = ref('')
   const isValid = computed(() => {
     return (
       formData.value.type != '' &&
@@ -28,8 +28,9 @@ export const useFormStore = defineStore('form', () => {
       image: '',
       isOld: false
     }
+    previewImage.value = ''
   }
 
 
-  return { isOpen, formData, previewImage, isValid, isSubmitted, close }
+  return { isOpen, formData, isValid, previewImage, isSubmitted, close }
 })

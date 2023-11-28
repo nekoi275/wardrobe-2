@@ -5,14 +5,9 @@ import FormValidationMessage from '@/components/FormValidationMessage.vue'
 const formStore = useFormStore()
 const seasonOptions = ['winter', 'autumn/spring', 'summer', 'any']
 
-function getColor(event: Event) {
-/*   const canvas: HTMLCanvasElement = document.getElementById('preview')
-  const ctx: CanvasRenderingContext2D = canvas.getContext('2d')!
-  let x = event.offsetX
-  let y = event.offsetY
-  let imageData = ctx.getImageData(x, y, 1, 1).data
-  formStore.formData.color = `rgb(${imageData[0]},${imageData[1]},${imageData[2]})`
-  return event */
+function fileChange(e: any) {
+  const file = e?.target?.files[0]
+  formStore.previewImage = URL.createObjectURL(file)
 }
 //TODO: colorpicker
 //TODO: separate form data from row ???
@@ -63,9 +58,10 @@ function getColor(event: Event) {
           >
           </Multi-select>
         </label>
+        <img class="preview" :src="formStore.previewImage" v-show="formStore.previewImage">
         <label>
           <span>Photo</span>
-          <input type="file" accept="image/png, image/jpeg, image/webp" required />
+          <input type="file" accept="image/png, image/jpeg, image/webp"  @change="fileChange"/>
         </label>
         <FormValidationMessage
           v-show="formStore.formData.color == '' && formStore.isSubmitted"
@@ -73,9 +69,6 @@ function getColor(event: Event) {
         <label>
           <span>Color</span>
           <input type="text" v-model="formStore.formData.color" required />
-        </label>
-        <label class="color-label" v-show="formStore.previewImage">
-          <canvas id="preview" width="200" height="200" @click="getColor"></canvas>
         </label>
         <button @click="$emit('submit')" type="button">Submit</button>
       </form>
@@ -109,7 +102,8 @@ function getColor(event: Event) {
   top: 50%;
   background-color: var(--main-light-color);
   border-radius: 3px;
-  padding: 30px;
+  padding: 20px;
+  width: 500px;
   text-align: right;
 }
 label {
@@ -117,18 +111,17 @@ label {
   color: var(--text-light-color);
   align-items: center;
   width: 100%;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 input,
 .multiselect {
   box-sizing: border-box;
   padding: 11px;
-  padding-left: 13px;
   margin: 8px;
   border-radius: 3px;
   transition: all 0.3s ease;
   border: 3px solid transparent;
-  width: 60%;
+  width: 70%;
 }
 input:focus {
   border: 3px solid var(--text-light-color);
@@ -142,8 +135,10 @@ span {
 .color-label {
   justify-content: center;
 }
-#preview {
-  cursor: crosshair;
+.preview {
+  width: 150px;
+  margin: 10px auto;
+  display: block;
 }
 button {
   margin-right: 20px;

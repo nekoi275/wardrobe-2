@@ -3,6 +3,7 @@ import { useSidebarStore } from '@/stores/sidebar'
 import ColorCheckbox from '@/components/ColorCheckbox.vue'
 
 const sidebarStore = useSidebarStore()
+const emit = defineEmits(['colorSelected', 'selected', 'deselected'])
 
 function openSidebar() {
   sidebarStore.isOpen = true
@@ -10,17 +11,25 @@ function openSidebar() {
 function closeSidebar() {
   sidebarStore.isOpen = false
 }
+function selectColor(option: string) {
+  if (!sidebarStore.filters.color.includes(option)) {
+    sidebarStore.filters.color.push(option)
+  } else {
+    sidebarStore.filters.color = sidebarStore.filters.color.filter(c => c != option)
+  }
+  emit('colorSelected')
+}
 // TODO: add colors to color filters
 </script>
 
 <template>
   <aside :class="{ open: sidebarStore.isOpen }" v-click-outside="closeSidebar">
     <V-icon name="fa-filter" @click="openSidebar()" />
-    <div v-for="filter in sidebarStore.availableFilters.filters" :key="filter.name">
+    <div v-for="filter in sidebarStore.availableFilters" :key="filter.name">
       <span>{{ filter.displayName }}</span>
       <Multi-select
         v-if="filter.name !== 'color'"
-        :options="sidebarStore.availableFilters.options[filter.name]"
+        :options="filter.options"
         mode="tags"
         :searchable="true"
         :canClear="false"
@@ -31,9 +40,10 @@ function closeSidebar() {
       </Multi-select>
       <div class="colors-container" v-else>
         <ColorCheckbox
-          v-for="option in sidebarStore.availableFilters.options.color"
+          v-for="option in filter.options"
           :key="option"
           :option="option"
+          @change="selectColor(option)"
         ></ColorCheckbox>
       </div>
     </div>
@@ -75,10 +85,11 @@ span {
   box-shadow: none;
 }
 .colors-container {
-  display: flex;
-  margin-bottom: 40px;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
   flex-wrap: wrap;
+  grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
+  grid-auto-rows: 20px;
+  grid-gap: 20px;
+  margin-bottom: 30px;
 }
 </style>

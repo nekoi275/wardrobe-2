@@ -6,27 +6,17 @@ export const useSidebarStore = defineStore('sidebar', () => {
   const isOpen = ref(false)
   const cardsView = ref(false)
   const filters = ref({} as Filters)
-  const availableFilters = ref({} as AvailableFilters)
+  const availableFilters = ref([] as AvailableFilter[])
 
   function getFilters(currentTable: CurrentTable) {
-    const filters = currentTable.headers.filter(h => h.isFilter === true)
-    availableFilters.value.filters = filters
-    const filterNames = filters.map(f => {return f.name})
-    const options = (() => {
-      const rows = currentTable.rows
-      const result: { [propName: string]: any } = {}
-      for (let i = 0; i < filterNames.length; i++) {
-        result[filterNames[i]] = []
-        for (let j = 0; j < rows.length; j++) {
-          const option = rows[j][filterNames[i]]
-          if (option && !result[filterNames[i]].includes(option)) {
-            result[filterNames[i]].push(option)
-          }
-        }
-      }
-      return result
-    })()
-    availableFilters.value.options = options
+    availableFilters.value = currentTable.headers.filter(h => h.isFilter === true).map(header => {
+      const { name, displayName } = header
+      const options = Array.from(new Set(currentTable.rows.map(row => row[name])))
+      return {name, displayName, options} as AvailableFilter
+    })
+    filters.value = availableFilters.value.reduce((accumulator, value) => {
+      return {...accumulator, [value.name]: []}
+    }, {})
   }
   function applyFilters(tableRows: Array<ClothesInfo>) {
     return tableRows.filter(makeFilter(filters.value))
@@ -49,11 +39,8 @@ interface Filters {
   [propName: string]: Array<any>
 }
 
-interface Options {
-  [propName: string]: Array<any>
-}
-
-interface AvailableFilters {
-  filters: Header[]
-  options: Options
+interface AvailableFilter {
+  name: string
+  displayName: string
+  options: Array<any>
 }

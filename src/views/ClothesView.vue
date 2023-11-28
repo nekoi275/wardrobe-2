@@ -43,7 +43,7 @@ function submit() {
         (response) => {
           api.getOne(
             () => {
-              tableStore.clothes.map((item) => (item.id !== response.id ? item : response))
+              tableStore.clothes?.map((item) => (item.id !== response.id ? item : response))
               tableStore.current.rows.map((item) => (item.id !== response.id ? item : response))
               sidebarStore.getFilters(tableStore.current)
               applyFilters()
@@ -63,7 +63,7 @@ function submit() {
         (response) => {
           api.getOne(
             () => {
-              tableStore.clothes.push(response)
+              tableStore.clothes?.push(response)
               tableStore.current.rows.push(response)
               sidebarStore.getFilters(tableStore.current)
               applyFilters()
@@ -112,7 +112,7 @@ function moveToOld(row: ClothesInfo) {
         'clothes',
         row.id
       )
-      tableStore.old.push(response)
+      tableStore.old?.push(response)
       formStore.close()
     },
     row,
@@ -130,7 +130,11 @@ function moveToOld(row: ClothesInfo) {
     @moveToOld="moveToOld"
     :isOld="false"
   ></TableMode>
-  <SettingsSidebar @selected="applyFilters()" @deselected="applyFilters()"></SettingsSidebar>
+  <SettingsSidebar
+    @selected="applyFilters()"
+    @deselected="applyFilters()"
+    @colorSelected="applyFilters()"
+  ></SettingsSidebar>
   <ImageModal></ImageModal>
   <ModalForm @submit="submit"></ModalForm>
   <button @click="openForm()">Add</button>

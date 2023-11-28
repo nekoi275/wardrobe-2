@@ -34,7 +34,7 @@ function submit() {
     (response) => {
       api.getOne(
         () => {
-          tableStore.accessories.map((item) => (item.id !== response.id ? item : response))
+          tableStore.accessories?.map((item) => (item.id !== response.id ? item : response))
           tableStore.current.rows.map((item) => (item.id !== response.id ? item : response))
           sidebarStore.getFilters(tableStore.current)
           applyFilters()
@@ -75,7 +75,11 @@ function remove(id: string) {
     @remove="remove"
     :isOld="true"
   ></TableMode>
-  <SettingsSidebar @selected="applyFilters()" @deselected="applyFilters()"></SettingsSidebar>
+  <SettingsSidebar
+    @selected="applyFilters()"
+    @deselected="applyFilters()"
+    @colorSelected="applyFilters()"
+  ></SettingsSidebar>
   <ImageModal></ImageModal>
   <ModalForm @submit="submit"></ModalForm>
   <CardsMode

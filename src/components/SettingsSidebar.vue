@@ -19,7 +19,6 @@ function selectColor(option: string) {
   }
   emit('colorSelected')
 }
-// TODO: add colors to color filters
 </script>
 
 <template>

@@ -16,7 +16,9 @@
     "@vueform/multiselect": "^2.6.6",
     "@vueform/toggle": "^2.1.4",
     "oh-vue-icons": "^1.0.0-rc3",
+    "palette-from-image": "^1.0.0",
     "pinia": "^2.1.7",
+    "rgbaster": "^2.1.1",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
   },

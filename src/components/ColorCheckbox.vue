@@ -5,14 +5,14 @@ defineProps<{
 </script>
 
 <template>
-  <label class="container">
+  <label class="checkbox-label">
     <input type="checkbox"/>
     <span class="checkmark" :style="{background: `${option}`}"></span>
   </label>
 </template>
 
 <style scoped>
-.container {
+.checkbox-label {
   position: relative;
   cursor: pointer;
   font-size: 22px;
@@ -22,17 +22,13 @@ defineProps<{
   user-select: none;
   flex-basis: 30%;
 }
-
-/* Hide the browser's default checkbox */
-.container input {
+.checkbox-label input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
   height: 0;
   width: 0;
 }
-
-/* Create a custom checkbox */
 .checkmark {
   position: absolute;
   top: 0;
@@ -41,21 +37,15 @@ defineProps<{
   width: 30px;
   border: 1px var(--main-dark-color) solid;
 }
-
-/* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
   content: "";
   position: absolute;
   display: none;
 }
-
-/* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
+.checkbox-label input:checked ~ .checkmark:after {
   display: block;
 }
-
-/* Style the checkmark/indicator */
-.container .checkmark:after {
+.checkbox-label .checkmark:after {
   left: 8px;
   top: 5px;
   width: 12px;

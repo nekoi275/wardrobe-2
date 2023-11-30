@@ -33,8 +33,8 @@ defineProps<{
   position: absolute;
   top: 0;
   left: 0;
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   border: 1px var(--main-dark-color) solid;
 }
 .checkmark:after {
@@ -46,10 +46,10 @@ defineProps<{
   display: block;
 }
 .checkbox-label .checkmark:after {
-  left: 8px;
-  top: 5px;
-  width: 12px;
-  height: 12px;
+  left: 6px;
+  top: 4px;
+  width: 11px;
+  height: 11px;
   border: solid var(--main-dark-color);
   border-width: 0 2px 2px 0;
   -webkit-transform: rotate(45deg);

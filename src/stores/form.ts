@@ -7,6 +7,7 @@ export const useFormStore = defineStore('form', () => {
   const formData = ref({} as ClothesInfo)
   const isSubmitted = ref(false)
   const previewImage = ref('')
+  const imagePalette = ref([])
   const isValid = computed(() => {
     return (
       formData.value.type != '' &&
@@ -29,8 +30,9 @@ export const useFormStore = defineStore('form', () => {
       isOld: false
     }
     previewImage.value = ''
+    imagePalette.value = []
   }
 
 
-  return { isOpen, formData, isValid, previewImage, isSubmitted, close }
+  return { isOpen, formData, isValid, previewImage, isSubmitted, imagePalette, close }
 })

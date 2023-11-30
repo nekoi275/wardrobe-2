@@ -2,12 +2,9 @@
 import { useFormStore } from '@/stores/form'
 import FormValidationMessage from '@/components/FormValidationMessage.vue'
 import { paletteFromImage } from 'palette-from-image'
-import { ref } from 'vue'
-import ColorCheckbox from '@/components/ColorCheckbox.vue'
 
 const formStore = useFormStore()
 const seasonOptions = ['winter', 'autumn/spring', 'summer', 'any']
-let imagePalette = ref()
 
 function fileChange(e: any) {
   const file = e?.target?.files[0]
@@ -15,18 +12,13 @@ function fileChange(e: any) {
   const image = document.querySelector('#preview') as HTMLImageElement
   image.addEventListener('load', function () {
     const palette = paletteFromImage(image, {
-      colorCount: 4,
+      colorCount: 6,
       strategy: 'quantize',
       pixelRatio: 0.8
     })
-    imagePalette.value = palette?.colors.map((color) => color.toHex())
+    formStore.imagePalette = palette?.colors.map((color) => color.toHex()) as []
   })
 }
-function selectColor(color: string) {
-  formStore.formData.color = color
-}
-
-//TODO: colorpicker
 //TODO: separate form data from row ???
 </script>
 
@@ -83,15 +75,18 @@ function selectColor(color: string) {
         <FormValidationMessage
           v-show="formStore.formData.color == '' && formStore.isSubmitted"
         ></FormValidationMessage>
-        <label v-show="imagePalette" class="input-label">
+        <fieldset id="colorgroup" v-show="formStore.imagePalette.length > 0" class="input-label">
           <span>Color</span>
-          <ColorCheckbox
-            v-for="color in imagePalette"
-            :key="color"
-            :option="color"
-            @checked="selectColor(color)"
-          ></ColorCheckbox>
-        </label>
+          <div class="color-container" v-for="color in formStore.imagePalette" :key="color">
+            <input
+              type="radio"
+              name="colorgroup"
+              :value="color"
+              v-model="formStore.formData.color"
+            />
+            <span class="checkmark" :style="{ 'background-color': `${color}` }"></span>
+          </div>
+        </fieldset>
         <button @click="$emit('submit')" type="button">Submit</button>
       </form>
     </div>
@@ -134,11 +129,8 @@ function selectColor(color: string) {
   align-items: center;
   width: 100%;
   justify-content: space-between;
-}
-.checkbox-label {
-  flex-basis: 0%;
-  margin-bottom: 30px;
-  margin-right: 35px;
+  border: none;
+  padding: 0px;
 }
 input,
 .multiselect {
@@ -156,16 +148,61 @@ input:focus {
 input[type='file'] {
   cursor: pointer;
 }
-span {
-  margin-left: 30px;
+.color-container {
+  position: relative;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  margin: auto;
+}
+.color-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+  margin: 0px;
+  padding: 0px;
+  border: none;
+  transition: none;
+  display: block;
+  z-index: 1;
+}
+.checkmark {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 25px;
+  width: 25px;
+  border-radius: 100px;
+}
+.color-container input:checked ~ .checkmark {
+  background-color: var(--main-light-color);
+}
+.checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.color-container input:checked ~ .checkmark:after {
+  display: block;
+}
+.color-container .checkmark:after {
+  background-color: var(--main-light-color);
+  width: 11px;
+  height: 11px;
+  border-radius: 100px;
+  top: 7px;
+  left: 7px;
 }
 #preview {
-  width: 150px;
+  width: 130px;
   margin: 10px auto;
   display: block;
 }
 button {
   margin-right: 20px;
+  margin-top: 20px;
 }
 .ov-icon {
   margin-bottom: 20px;

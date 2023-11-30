@@ -9,6 +9,7 @@ export const useApiStore = defineStore('api', () => {
   const userName = ref('')
   const password = ref('')
   const isLoggedIn = ref(false)
+  const isWrongCreds = ref(false)
   const requestConfig = computed(() => {
     return {
       headers: {
@@ -20,9 +21,11 @@ export const useApiStore = defineStore('api', () => {
     return fetch(`${baseUrl}?category=clothes`, requestConfig.value).then((response) => {
       if (response.ok) {
         isLoggedIn.value = true
+        isWrongCreds.value = false
         router.push('/clothes')
         return `Successfully logged in`
       } else {
+        isWrongCreds.value = true
         console.error('getting error.Status: ' + response.status)
       }
     })
@@ -111,6 +114,7 @@ export const useApiStore = defineStore('api', () => {
     userName,
     password,
     isLoggedIn,
+    isWrongCreds,
     login,
     get,
     getOne,

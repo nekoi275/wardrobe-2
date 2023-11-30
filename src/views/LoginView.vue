@@ -1,26 +1,30 @@
 <script setup lang="ts">
 import { useApiStore } from '@/stores/api'
+import FormValidationMessage from '@/components/FormValidationMessage.vue'
 
 const api = useApiStore()
-//TODO: validation message
 </script>
 
 <template>
-<div class="overlay"></div>
-<div class="background"></div>
-<div class="container">
-  <form v-if="!api.isLoggedIn">
-    <label>
-      User Name
-      <input type="text" v-model="api.userName" />
-    </label>
-    <label>
-      Password
-      <input type="password" v-model="api.password" />
-    </label>
-    <button @click="api.login()" type="button">Log in</button>
-  </form>
-</div>
+  <div class="overlay"></div>
+  <div class="background"></div>
+  <div class="container">
+    <form v-if="!api.isLoggedIn">
+      <FormValidationMessage
+        :msg="'Wrong credentials'"
+        v-show="api.isWrongCreds"
+      ></FormValidationMessage>
+      <label>
+        User Name
+        <input type="text" v-model="api.userName" />
+      </label>
+      <label>
+        Password
+        <input type="password" v-model="api.password" />
+      </label>
+      <button @click="api.login()" type="button">Log in</button>
+    </form>
+  </div>
 </template>
 
 <style scoped>
@@ -62,9 +66,9 @@ form {
   opacity: 1;
 }
 label {
-    display: block;
-    text-align: left;
-    width: 100%;
+  display: block;
+  text-align: left;
+  width: 100%;
 }
 input {
   box-sizing: border-box;
@@ -82,9 +86,9 @@ input {
   border: 3px solid transparent;
 }
 button {
-    background-color: var(--main-light-color);
-    color: var(--main-dark-color);
-    margin: 0px auto;
+  background-color: var(--main-light-color);
+  color: var(--main-dark-color);
+  margin: 0px auto;
 }
 button:hover {
   background-color: var(--main-dark-color);

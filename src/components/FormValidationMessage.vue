@@ -1,6 +1,12 @@
+<script setup lang="ts">
+defineProps<{
+  msg: string
+}>()
+</script>
+
 <template>
   <span class="required-msg"
-    >This field is required</span>
+    >{{ msg }}</span>
 </template>
 
 <style scoped>

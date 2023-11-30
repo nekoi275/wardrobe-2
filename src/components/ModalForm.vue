@@ -30,6 +30,7 @@ function fileChange(e: any) {
       <form>
         <input type="hidden" v-model="formStore.formData._id" />
         <FormValidationMessage
+          :msg="'This field is required'"
           v-show="formStore.formData.type == '' && formStore.isSubmitted"
         ></FormValidationMessage>
         <label class="input-label">
@@ -45,6 +46,7 @@ function fileChange(e: any) {
           <input type="number" v-model.number="formStore.formData.price" />
         </label>
         <FormValidationMessage
+          :msg="'This field is required'"
           v-show="formStore.formData.year == 0 && formStore.isSubmitted"
         ></FormValidationMessage>
         <label class="input-label">
@@ -73,6 +75,7 @@ function fileChange(e: any) {
           <input type="file" accept="image/png, image/jpeg, image/webp" @change="fileChange" />
         </label>
         <FormValidationMessage
+          :msg="'This field is required'"
           v-show="formStore.formData.color == '' && formStore.isSubmitted"
         ></FormValidationMessage>
         <fieldset id="colorgroup" v-show="formStore.imagePalette.length > 0" class="input-label">

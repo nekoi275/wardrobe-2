@@ -19,7 +19,7 @@ function fileChange(e: any) {
     formStore.imagePalette = palette?.colors.map((color) => color.toHex()) as []
   })
 }
-//TODO: separate form data from row ???
+//TODO: clear file, validate color
 </script>
 
 <template>

@@ -26,8 +26,7 @@ export const useFormStore = defineStore('form', () => {
       season: 'any',
       price: 0,
       year: new Date().getFullYear(),
-      image: '',
-      isOld: false
+      image: ''
     }
     previewImage.value = ''
     imagePalette.value = []

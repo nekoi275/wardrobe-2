@@ -27,22 +27,16 @@ function openImage() {
 }
 function openForm(row: ClothesInfo) {
   formStore.isOpen = true
-  formStore.formData = row
+  formStore.formData = {...row}
 }
 function submit() {
   api.edit(
     (response) => {
-      api.getOne(
-        () => {
-          tableStore.accessories?.map((item) => (item.id !== response.id ? item : response))
-          tableStore.current.rows.map((item) => (item.id !== response.id ? item : response))
-          sidebarStore.getFilters(tableStore.current)
-          applyFilters()
-          formStore.isSubmitted = false
-        },
-        'old',
-        response.id
-      )
+      const index = tableStore.old?.findIndex((item) => item.id == response.id)!
+      tableStore.old?.splice(index, 1, response)
+      sidebarStore.getFilters(tableStore.current)
+      applyFilters()
+      formStore.isSubmitted = false
       formStore.close()
     },
     formStore.formData,

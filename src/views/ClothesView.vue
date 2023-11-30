@@ -28,7 +28,7 @@ function openImage() {
 function openForm(row?: ClothesInfo) {
   if (row) {
     formStore.isOpen = true
-    formStore.formData = row
+    formStore.formData = {...row}
   } else {
     formStore.isOpen = true
     formStore.formData.year = new Date().getFullYear()
@@ -41,17 +41,11 @@ function submit() {
     if (formStore.formData.id) {
       api.edit(
         (response) => {
-          api.getOne(
-            () => {
-              tableStore.clothes?.map((item) => (item.id !== response.id ? item : response))
-              tableStore.current.rows.map((item) => (item.id !== response.id ? item : response))
-              sidebarStore.getFilters(tableStore.current)
-              applyFilters()
-              formStore.isSubmitted = false
-            },
-            'clothes',
-            response.id
-          )
+          const index = tableStore.clothes?.findIndex(item => item.id == response.id)!
+          tableStore.clothes?.splice(index, 1, response)
+          sidebarStore.getFilters(tableStore.current)
+          applyFilters()
+          formStore.isSubmitted = false
           formStore.close()
         },
         formStore.formData,
@@ -61,18 +55,11 @@ function submit() {
     } else {
       api.create(
         (response) => {
-          api.getOne(
-            () => {
-              tableStore.clothes?.push(response)
-              tableStore.current.rows.push(response)
-              sidebarStore.getFilters(tableStore.current)
-              applyFilters()
-              formStore.isSubmitted = false
-              tableStore.countTotal()
-            },
-            'clothes',
-            response.id
-          )
+          tableStore.clothes?.push(response)
+          sidebarStore.getFilters(tableStore.current)
+          applyFilters()
+          formStore.isSubmitted = false
+          tableStore.countTotal()
           formStore.close()
         },
         formStore.formData,

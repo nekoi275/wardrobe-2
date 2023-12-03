@@ -4,138 +4,37 @@ import CardsMode from '@/components/CardsMode.vue'
 import SettingsSidebar from '@/components/SettingsSidebar.vue'
 import ImageModal from '@/components/ImageModal.vue'
 import ModalForm from '@/components/ModalForm.vue'
+import { useGeneralStore } from '@/stores/general'
 import { useSidebarStore } from '@/stores/sidebar'
-import { useTableStore } from '@/stores/table'
-import { useImageStore } from '@/stores/image'
-import { useApiStore } from '@/stores/api'
-import { useFormStore } from '@/stores/form'
-import type { ClothesInfo } from '@/stores/interfaces'
 
-const imageStore = useImageStore()
-const tableStore = useTableStore()
+const generalStore = useGeneralStore()
 const sidebarStore = useSidebarStore()
-const api = useApiStore()
-const formStore = useFormStore()
-
-function applyFilters() {
-  const filteredValues = sidebarStore.applyFilters(tableStore.current.rows)
-  tableStore.filtered = filteredValues
-}
-function openImage(imageUrl: string) {
-  imageStore.imageUrl = imageUrl
-  imageStore.isOpen = true
-}
-function openForm(row?: ClothesInfo) {
-  if (row) {
-    formStore.isOpen = true
-    formStore.formData = { ...row }
-  } else {
-    formStore.isOpen = true
-    formStore.formData.year = new Date().getFullYear()
-    formStore.formData.season = 'any'
-  }
-}
-function submit() {
-  formStore.isSubmitted = true
-  if (formStore.isValid) {
-    if (formStore.formData.id) {
-      api.edit(
-        (response) => {
-          const index = tableStore.clothes?.findIndex((item) => item.id == response.id)!
-          tableStore.clothes?.splice(index, 1, response)
-          sidebarStore.getFilters(tableStore.current)
-          applyFilters()
-          formStore.isSubmitted = false
-          formStore.close()
-        },
-        formStore.formData,
-        'clothes',
-        formStore.formData.id
-      )
-    } else {
-      api.createImage(formStore.imageData).then(response => {
-        if (response?.id) {
-          formStore.formData.image = api.getImage(response.id)
-        }
-        api.create(
-          (response) => {
-            tableStore.clothes?.push(response)
-            sidebarStore.getFilters(tableStore.current)
-            applyFilters()
-            formStore.isSubmitted = false
-            tableStore.countTotal()
-            formStore.close()
-          },
-          formStore.formData,
-          'clothes'
-        )
-      })
-    }
-  }
-}
-function remove(id: string, imageUrl: string) {
-  api.remove(
-    () => {
-      api.removeImage(imageUrl)
-      api.get((response: any) => {
-        tableStore.clothes = [...response]
-        tableStore.current.rows = [...tableStore.clothes.filter((item) => !item.isOld)]
-        sidebarStore.getFilters(tableStore.current)
-        applyFilters()
-        tableStore.countTotal()
-      }, 'clothes')
-    },
-    'clothes',
-    id
-  )
-}
-function moveToOld(row: ClothesInfo) {
-  api.create(
-    (response) => {
-      api.remove(
-        () => {
-          api.get((response: any) => {
-            tableStore.clothes = [...response]
-            tableStore.current.rows = [...tableStore.clothes]
-            sidebarStore.getFilters(tableStore.current)
-            applyFilters()
-            tableStore.countTotal()
-          }, 'clothes')
-        },
-        'clothes',
-        row.id!
-      )
-      tableStore.old?.push(response)
-      formStore.close()
-    },
-    row,
-    'old'
-  )
-}
+const removeHandler = generalStore.remove('clothes')
+const moveToOldHandler = generalStore.remove('clothes')
 </script>
 
 <template>
   <TableMode
     v-if="!sidebarStore.cardsView"
-    @openImage="openImage"
-    @openForm="openForm"
-    @remove="remove"
-    @moveToOld="moveToOld"
+    @openImage="generalStore.openImage"
+    @openForm="generalStore.openForm"
+    @remove="removeHandler"
+    @moveToOld="moveToOldHandler"
     :isOld="false"
   ></TableMode>
   <SettingsSidebar
-    @selected="applyFilters()"
-    @deselected="applyFilters()"
-    @colorSelected="applyFilters()"
+    @selected="generalStore.applyFilters()"
+    @deselected="generalStore.applyFilters()"
+    @colorSelected="generalStore.applyFilters()"
   ></SettingsSidebar>
   <ImageModal></ImageModal>
-  <ModalForm @submit="submit"></ModalForm>
-  <button @click="openForm()">Add</button>
+  <ModalForm @submit="generalStore.submit('clothes')"></ModalForm>
+  <button @click="generalStore.openForm()">Add</button>
   <CardsMode
     v-if="sidebarStore.cardsView"
-    @openForm="openForm"
-    @remove="remove"
-    @moveToOld="moveToOld"
+    @openForm="generalStore.openForm()"
+    @remove="removeHandler"
+    @moveToOld="moveToOldHandler"
     :isOld="false"
   ></CardsMode>
 </template>

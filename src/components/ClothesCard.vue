@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useTableStore } from '@/stores/table'
-import img from '@/assets/default_image.jpg'
 import type { ClothesInfo } from '@/stores/interfaces'
 
 defineProps<{
@@ -12,7 +11,7 @@ const tableStore = useTableStore()
 
 <template>
   <div class="card">
-    <img class="card-image" :src="img" />
+    <img class="card-image" :src="row.image" />
     <table>
       <tr v-for="header in tableStore.current.headers" :key="header.name">
         <td>{{ header.displayName }}:</td>
@@ -22,7 +21,7 @@ const tableStore = useTableStore()
     </table>
     <footer>
       <V-icon name="fa-edit" @click="$emit('openForm', row)" title="Edit entry"/>
-      <V-icon name="fa-trash-alt" @click="$emit('remove', row.id)" title="Remove entry"/>
+      <V-icon name="fa-trash-alt" @click="$emit('remove', row.id, row.image)" title="Remove entry"/>
       <V-icon v-if="!isOld" name="fa-share-square" @click="$emit('moveToOld', row)" title="Move entry to old"/>
     </footer>
   </div>

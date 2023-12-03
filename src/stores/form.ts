@@ -8,6 +8,7 @@ export const useFormStore = defineStore('form', () => {
   const isSubmitted = ref(false)
   const previewImage = ref('')
   const imagePalette = ref([])
+  const imageData = ref()
   const isValid = computed(() => {
     return (
       formData.value.type != '' &&
@@ -19,7 +20,6 @@ export const useFormStore = defineStore('form', () => {
   function close() {
     isOpen.value = false
     formData.value = {
-      id: '',
       type: '',
       color: '',
       description: '',
@@ -30,8 +30,9 @@ export const useFormStore = defineStore('form', () => {
     }
     previewImage.value = ''
     imagePalette.value = []
+    isSubmitted.value = false
   }
 
 
-  return { isOpen, formData, isValid, previewImage, isSubmitted, imagePalette, close }
+  return { isOpen, formData, isValid, previewImage, isSubmitted, imagePalette, imageData, close }
 })

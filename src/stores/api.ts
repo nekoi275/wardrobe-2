@@ -5,7 +5,6 @@ import type { ClothesInfo } from './interfaces'
 
 export const useApiStore = defineStore('api', () => {
   const baseUrl = 'https://wardrobe-manager.denias.workers.dev/'
-  //const baseUrl = 'http://192.168.100.4:8787'
   const userName = ref('')
   const password = ref('')
   const isLoggedIn = ref(false)
@@ -53,9 +52,6 @@ export const useApiStore = defineStore('api', () => {
       })
       .then(callback)
       .catch((error: any) => console.error(error))
-  }
-  function getImage() {
-    return ''
   }
   function create(callback: (response: any) => void, data: ClothesInfo, category: string) {
     fetch(`${baseUrl}?category=${category}`, {
@@ -109,6 +105,39 @@ export const useApiStore = defineStore('api', () => {
       .then(callback)
       .catch((error: any) => console.error(error))
   }
+  function getImage(id: string) {
+    return `${baseUrl}image?id=${id}`
+  }
+  function createImage(data?: Blob) {
+    if (data) {
+      return fetch(`${baseUrl}image`, {
+        ...requestConfig.value,
+        method: 'PUT',
+        body: data
+      }).then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
+        }
+      })
+    } else {
+      return Promise.resolve()
+    }
+  }
+  function removeImage(url: string) {
+    fetch(url, {
+      ...requestConfig.value,
+      method: 'DELETE'
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response
+        } else {
+          console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
+        }
+      })
+  }
 
   return {
     userName,
@@ -118,9 +147,11 @@ export const useApiStore = defineStore('api', () => {
     login,
     get,
     getOne,
-    getImage,
     create,
     edit,
-    remove
+    remove,
+    getImage,
+    createImage,
+    removeImage
   }
 })

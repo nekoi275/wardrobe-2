@@ -16,8 +16,8 @@ defineProps<{
         :key="row.id"
         :row="row"
         @openForm="$emit('openForm', row)"
-        @remove="$emit('remove', row.id)"
-        @click="$emit('moveToOld', row)"
+        @remove="$emit('remove', row.id, row.image)"
+        @moveToOld="$emit('moveToOld', row)"
         :isOld="isOld"
       ></ClothesCard>
     </div>

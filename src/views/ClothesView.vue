@@ -21,14 +21,14 @@ function applyFilters() {
   const filteredValues = sidebarStore.applyFilters(tableStore.current.rows)
   tableStore.filtered = filteredValues
 }
-function openImage() {
-  imageStore.imageUrl = api.getImage()
+function openImage(imageUrl: string) {
+  imageStore.imageUrl = imageUrl
   imageStore.isOpen = true
 }
 function openForm(row?: ClothesInfo) {
   if (row) {
     formStore.isOpen = true
-    formStore.formData = {...row}
+    formStore.formData = { ...row }
   } else {
     formStore.isOpen = true
     formStore.formData.year = new Date().getFullYear()
@@ -41,7 +41,7 @@ function submit() {
     if (formStore.formData.id) {
       api.edit(
         (response) => {
-          const index = tableStore.clothes?.findIndex(item => item.id == response.id)!
+          const index = tableStore.clothes?.findIndex((item) => item.id == response.id)!
           tableStore.clothes?.splice(index, 1, response)
           sidebarStore.getFilters(tableStore.current)
           applyFilters()
@@ -53,24 +53,30 @@ function submit() {
         formStore.formData.id
       )
     } else {
-      api.create(
-        (response) => {
-          tableStore.clothes?.push(response)
-          sidebarStore.getFilters(tableStore.current)
-          applyFilters()
-          formStore.isSubmitted = false
-          tableStore.countTotal()
-          formStore.close()
-        },
-        formStore.formData,
-        'clothes'
-      )
+      api.createImage(formStore.imageData).then(response => {
+        if (response?.id) {
+          formStore.formData.image = api.getImage(response.id)
+        }
+        api.create(
+          (response) => {
+            tableStore.clothes?.push(response)
+            sidebarStore.getFilters(tableStore.current)
+            applyFilters()
+            formStore.isSubmitted = false
+            tableStore.countTotal()
+            formStore.close()
+          },
+          formStore.formData,
+          'clothes'
+        )
+      })
     }
   }
 }
-function remove(id: string) {
+function remove(id: string, imageUrl: string) {
   api.remove(
     () => {
+      api.removeImage(imageUrl)
       api.get((response: any) => {
         tableStore.clothes = [...response]
         tableStore.current.rows = [...tableStore.clothes.filter((item) => !item.isOld)]
@@ -97,7 +103,7 @@ function moveToOld(row: ClothesInfo) {
           }, 'clothes')
         },
         'clothes',
-        row.id
+        row.id!
       )
       tableStore.old?.push(response)
       formStore.close()

@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { ClothesInfo, Header, CurrentTable } from '@/stores/interfaces'
+import type { ClothesInfo, CurrentTable } from '@/stores/interfaces'
 
 export const useSidebarStore = defineStore('sidebar', () => {
   const isOpen = ref(false)

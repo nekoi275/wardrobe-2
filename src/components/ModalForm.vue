@@ -8,6 +8,7 @@ const seasonOptions = ['winter', 'autumn/spring', 'summer', 'any']
 
 function fileChange(e: any) {
   const file = e?.target?.files[0]
+  formStore.imageData = file
   formStore.previewImage = URL.createObjectURL(file)
   const image = document.querySelector('#preview') as HTMLImageElement
   image.addEventListener('load', function () {
@@ -19,7 +20,7 @@ function fileChange(e: any) {
     formStore.imagePalette = palette?.colors.map((color) => color.toHex()) as []
   })
 }
-//TODO: clear file, validate color
+//TODO: clear file
 </script>
 
 <template>
@@ -28,14 +29,13 @@ function fileChange(e: any) {
     <div class="modal">
       <V-icon name="fa-regular-window-close" @click="formStore.close()" />
       <form>
-        <input type="hidden" v-model="formStore.formData._id" />
         <FormValidationMessage
           :msg="'This field is required'"
           v-show="formStore.formData.type == '' && formStore.isSubmitted"
         ></FormValidationMessage>
         <label class="input-label">
           <span>Type</span>
-          <input type="text" v-model="formStore.formData.type" required />
+          <input type="text" v-model="formStore.formData.type" />
         </label>
         <label class="input-label">
           <span>Description</span>
@@ -51,13 +51,7 @@ function fileChange(e: any) {
         ></FormValidationMessage>
         <label class="input-label">
           <span>Year</span>
-          <input
-            type="number"
-            min="2000"
-            max="2050"
-            v-model.number="formStore.formData.year"
-            required
-          />
+          <input type="number" min="2000" max="2050" v-model.number="formStore.formData.year" />
         </label>
         <label class="input-label">
           <span>Season</span>
@@ -69,18 +63,23 @@ function fileChange(e: any) {
           >
           </Multi-select>
         </label>
-        <img id="preview" :src="formStore.previewImage" v-show="formStore.previewImage" />
+        <img id="preview" :src="formStore.previewImage" v-show="formStore.previewImage"/>
         <label class="input-label">
           <span>Photo</span>
-          <input type="file" accept="image/png, image/jpeg, image/webp" @change="fileChange" />
+          <input type="file" accept="image/png, image/jpeg, image/webp" @change="fileChange"/>
         </label>
         <FormValidationMessage
           :msg="'This field is required'"
           v-show="formStore.formData.color == '' && formStore.isSubmitted"
         ></FormValidationMessage>
-        <fieldset id="colorgroup" v-show="formStore.imagePalette.length > 0" class="input-label">
+        <fieldset id="colorgroup" class="input-label">
           <span>Color</span>
-          <div class="color-container" v-for="color in formStore.imagePalette" :key="color">
+          <div
+            class="color-container"
+            v-show="formStore.imagePalette.length > 0"
+            v-for="color in formStore.imagePalette"
+            :key="color"
+          >
             <input
               type="radio"
               name="colorgroup"
@@ -89,6 +88,12 @@ function fileChange(e: any) {
             />
             <span class="checkmark" :style="{ 'background-color': `${color}` }"></span>
           </div>
+          <input
+            type="text"
+            v-show="formStore.imagePalette.length == 0"
+            v-model="formStore.formData.color"
+            :style="{ 'background-color': `${formStore.formData.color}` }"
+          />
         </fieldset>
         <button @click="$emit('submit')" type="button">Submit</button>
       </form>

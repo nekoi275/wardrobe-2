@@ -21,8 +21,8 @@ function applyFilters() {
   const filteredValues = sidebarStore.applyFilters(tableStore.current.rows)
   tableStore.filtered = filteredValues
 }
-function openImage() {
-  imageStore.imageUrl = api.getImage()
+function openImage(imageUrl: string) {
+  imageStore.imageUrl = imageUrl
   imageStore.isOpen = true
 }
 function openForm(row?: ClothesInfo) {
@@ -53,24 +53,30 @@ function submit() {
         formStore.formData.id
       )
     } else {
-      api.create(
-        (response) => {
-          tableStore.accessories?.push(response)
-          sidebarStore.getFilters(tableStore.current)
-          applyFilters()
-          formStore.isSubmitted = false
-          tableStore.countTotal()
-          formStore.close()
-        },
-        formStore.formData,
-        'accessories'
-      )
+      api.createImage(formStore.imageData).then(response => {
+        if (response?.id) {
+          formStore.formData.image = api.getImage(response.id)
+        }
+        api.create(
+          (response) => {
+            tableStore.accessories?.push(response)
+            sidebarStore.getFilters(tableStore.current)
+            applyFilters()
+            formStore.isSubmitted = false
+            tableStore.countTotal()
+            formStore.close()
+          },
+          formStore.formData,
+          'accessories'
+        )
+      })
     }
   }
 }
-function remove(id: string) {
+function remove(id: string, imageUrl: string) {
   api.remove(
     () => {
+      api.removeImage(imageUrl)
       api.get((response: any) => {
         tableStore.accessories = [...response]
         tableStore.current.rows = [...tableStore.accessories.filter((item) => !item.isOld)]
@@ -97,7 +103,7 @@ function moveToOld(row: ClothesInfo) {
           }, 'accessories')
         },
         'accessories',
-        row.id
+        row.id!
       )
       tableStore.old?.push(response)
       formStore.close()

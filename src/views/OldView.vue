@@ -21,8 +21,8 @@ function applyFilters() {
   const filteredValues = sidebarStore.applyFilters(tableStore.current.rows)
   tableStore.filtered = filteredValues
 }
-function openImage() {
-  imageStore.imageUrl = api.getImage()
+function openImage(imageUrl: string) {
+  imageStore.imageUrl = imageUrl
   imageStore.isOpen = true
 }
 function openForm(row: ClothesInfo) {
@@ -41,10 +41,11 @@ function submit() {
     },
     formStore.formData,
     'old',
-    formStore.formData.id
+    formStore.formData.id!
   )
 }
-function remove(id: string) {
+function remove(id: string, imageUrl: string) {
+  api.removeImage(imageUrl)
   api.remove(
     () => {
       api.get((response: any) => {

@@ -5,7 +5,7 @@ interface ClothesInfo {
   price: number
   year: number
   season: string
-  id: string
+  id?: string
   image: string
   [propName: string]: any
 }

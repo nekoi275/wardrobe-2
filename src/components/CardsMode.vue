@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useTableStore } from '@/stores/table'
 import ClothesCard from '@/components/ClothesCard.vue'
+import { useApiStore } from '@/stores/api'
 
 const tableStore = useTableStore()
+const api = useApiStore()
 defineProps<{
   isOld: boolean
 }>()
@@ -15,6 +17,7 @@ defineProps<{
         v-for="row in tableStore.filtered"
         :key="row.id"
         :row="row"
+        :imageUrl="api.getImageUrl(row.image)"
         @openForm="$emit('openForm', row)"
         @remove="$emit('remove', row.id, row.image)"
         @moveToOld="$emit('moveToOld', row)"

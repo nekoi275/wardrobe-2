@@ -19,9 +19,9 @@ export const useGeneralStore = defineStore('general', () => {
     const filteredValues = sidebarStore.applyFilters(tableStore.current.rows)
     tableStore.filtered = filteredValues
   }
-  function openImage(imageUrl?: string) {
-    if (imageUrl) {
-      imageStore.imageUrl = imageUrl
+  function openImage(id?: string) {
+    if (id) {
+      imageStore.imageUrl = api.getImageUrl(id)
       imageStore.isOpen = true
     }
   }
@@ -38,7 +38,7 @@ export const useGeneralStore = defineStore('general', () => {
   function create(category: 'clothes' | 'old' | 'accessories') {
     api.createImage(formStore.imageData).then((response) => {
       if (response?.id) {
-        formStore.formData.image = api.getImageUrl(response.id)
+        formStore.formData.image = response.id
       }
       api.create(formStore.formData, category).then((response) => {
         tableStore[category]?.push(response)
@@ -76,9 +76,9 @@ export const useGeneralStore = defineStore('general', () => {
     }
   }
   function remove(category: 'clothes' | 'old' | 'accessories') {
-    return (id: string, imageUrl: string) => {
+    return (id: string, imageId: string) => {
       api.remove(category, id).then(() => {
-        api.removeImage(imageUrl)
+        api.removeImage(imageId)
         api.get(category).then((response: any) => {
           tableStore[category] = [...response]
           tableStore.current.rows = [...tableStore[category]!.filter((item) => !item.isOld)]

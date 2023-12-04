@@ -1,18 +1,42 @@
 <script setup lang="ts">
 import { useMoodboardStore } from '@/stores/moodboard'
+import { useApiStore } from '@/stores/api'
 
 const moodboardStore = useMoodboardStore()
+const api = useApiStore()
+
+function fileChange(e: any) {
+  const file = e?.target?.files[0]
+  moodboardStore.imageData = file
+}
+function submit() {
+  api.createImage(moodboardStore.imageData).then((response) => {
+    if (response?.id) {
+      moodboardStore.images.push(response.id)
+      api.updateImageIds(moodboardStore.images)
+    }
+  })
+}
+function removeImage(id: string) {
+  api.removeImage(id)
+  const index = moodboardStore.images.findIndex((item: string) => item == id)!
+  moodboardStore.images = [
+    ...moodboardStore.images.slice(0, index),
+    ...moodboardStore.images.slice(index + 1)
+  ]
+  api.updateImageIds(moodboardStore.images)
+}
 </script>
 
 <template>
   <button>
-    <input type="file" accept="image/png, image/jpeg, image/webp" />
+    <input type="file" accept="image/png, image/jpeg, image/webp" @change="fileChange" />
   </button>
-  <button class="add-button">Add</button>
+  <button class="add-button" @click="submit">Add</button>
   <div class="moodboard-container">
     <figure v-for="image in moodboardStore.images" :key="image">
-      <img :src="image" />
-      <V-icon name="fa-trash-alt" />
+      <img :src="api.getImageUrl(image)" />
+      <V-icon name="fa-trash-alt" @click="removeImage(image)" />
     </figure>
   </div>
 </template>

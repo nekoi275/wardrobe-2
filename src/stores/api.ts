@@ -113,13 +113,35 @@ export const useApiStore = defineStore('api', () => {
       return Promise.resolve()
     }
   }
-  function removeImage(url: string) {
-    fetch(url, {
+  function removeImage(id: string) {
+    fetch(getImageUrl(id), {
       ...requestConfig.value,
       method: 'DELETE'
     }).then((response) => {
       if (response.ok) {
         return response
+      } else {
+        console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
+      }
+    })
+  }
+  function getImageIds() {
+    return fetch(`${baseUrl}?category=moodboard&id=1`, requestConfig.value).then((response) => {
+      if (response.ok) {
+        return response.json()
+      } else {
+        console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
+      }
+    })
+  }
+  function updateImageIds(imageIds: Array<string>) {
+    return fetch(`${baseUrl}?category=moodboard&id=1`, {
+      ...requestConfig.value,
+      method: 'PUT',
+      body: JSON.stringify(imageIds)
+    }).then((response) => {
+      if (response.ok) {
+        return response.json()
       } else {
         console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
       }
@@ -139,6 +161,8 @@ export const useApiStore = defineStore('api', () => {
     getImageUrl,
     createImage,
     editImage,
-    removeImage
+    removeImage,
+    getImageIds,
+    updateImageIds
   }
 })

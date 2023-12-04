@@ -7,6 +7,7 @@ import LoginView from '../views/LoginView.vue'
 import { useTableStore } from '@/stores/table'
 import { useApiStore } from '@/stores/api'
 import { useSidebarStore } from '@/stores/sidebar'
+import { useMoodboardStore } from '@/stores/moodboard'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,6 +44,7 @@ router.beforeEach((to) => {
   const api = useApiStore()
   const tableStore = useTableStore()
   const sidebarStore = useSidebarStore()
+  const moodboardStore = useMoodboardStore()
   if (!api.isLoggedIn && to.name !== 'login') {
     return { name: 'login' }
   }
@@ -63,6 +65,11 @@ router.beforeEach((to) => {
       tableStore.filtered = tableStore.current.rows
       tableStore.countTotal()
     }
+  }
+  if (to.name === 'moodboard') {
+    api.getImageIds().then((response) => {
+      moodboardStore.images = response
+    })
   }
 })
 export default router

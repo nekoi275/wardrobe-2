@@ -33,7 +33,7 @@ function sort(field: string) {
       <th class="empty-th">Total: {{ tableStore.totalAmount }}</th>
     </thead>
     <tbody>
-      <tr v-for="row in tableStore.filtered" :key="row._id">
+      <tr v-for="row in tableStore.filtered" :key="row.id">
         <td>{{ row.type }}</td>
         <td :style="{ backgroundColor: row.color }"></td>
         <td>{{ row.description }}</td>

@@ -31,6 +31,9 @@ export const useFormStore = defineStore('form', () => {
     previewImage.value = ''
     imagePalette.value = []
     isSubmitted.value = false
+    imageData.value = null
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement
+    fileInput.value = ''
   }
 
 

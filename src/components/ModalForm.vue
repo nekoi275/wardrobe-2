@@ -20,7 +20,6 @@ function fileChange(e: any) {
     formStore.imagePalette = palette?.colors.map((color) => color.toHex()) as []
   })
 }
-//TODO: clear file
 </script>
 
 <template>
@@ -66,7 +65,7 @@ function fileChange(e: any) {
         <img id="preview" :src="formStore.previewImage" v-show="formStore.previewImage"/>
         <label class="input-label">
           <span>Photo</span>
-          <input type="file" accept="image/png, image/jpeg, image/webp" @change="fileChange"/>
+          <input type="file" id="fileInput" accept="image/png, image/jpeg, image/webp" @change="fileChange"/>
         </label>
         <FormValidationMessage
           :msg="'This field is required'"

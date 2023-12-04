@@ -32,7 +32,7 @@ const moveToOldHandler = generalStore.remove('clothes')
   <button @click="generalStore.openForm()">Add</button>
   <CardsMode
     v-if="sidebarStore.cardsView"
-    @openForm="generalStore.openForm()"
+    @openForm="generalStore.openForm"
     @remove="removeHandler"
     @moveToOld="moveToOldHandler"
     :isOld="false"

@@ -11,7 +11,8 @@ const tableStore = useTableStore()
 
 <template>
   <div class="card">
-    <img class="card-image" :src="row.image" />
+    <img v-if="row.image" class="card-image" :src="row.image" />
+    <img v-else class="card-image" src="@/assets/default_image.jpg" />
     <table>
       <tr v-for="header in tableStore.current.headers" :key="header.name">
         <td>{{ header.displayName }}:</td>

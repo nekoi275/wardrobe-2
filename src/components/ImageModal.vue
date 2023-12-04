@@ -5,7 +5,7 @@ const imageStore = useImageStore()
 
 <template>
     <div class="container" v-show="imageStore.isOpen">
-      <div class="overlay" @click="imageStore.isOpen = !imageStore.isOpen"></div>
+      <div class="overlay" @click="imageStore.close"></div>
       <div class="modal">
         <img :src="imageStore.imageUrl" />
       </div>

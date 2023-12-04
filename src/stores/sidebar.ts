@@ -4,7 +4,7 @@ import type { ClothesInfo, CurrentTable } from '@/stores/interfaces'
 
 export const useSidebarStore = defineStore('sidebar', () => {
   const isOpen = ref(false)
-  const cardsView = ref(false)
+  const cardsView = ref(true)
   const filters = ref({} as Filters)
   const availableFilters = ref([] as AvailableFilter[])
 

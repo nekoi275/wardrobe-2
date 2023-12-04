@@ -50,13 +50,13 @@ router.beforeEach((to) => {
     const tableName = to.name
     tableStore.updateHeaders(tableStore.headers[tableName])
     if (tableStore[tableName] === undefined) {
-      api.get((response: any) => {
+      api.get(tableName).then((response: any) => {
         tableStore[tableName] = response
         tableStore.current.rows = tableStore[tableName]!
         sidebarStore.getFilters(tableStore.current)
         tableStore.filtered = tableStore.current.rows
         tableStore.countTotal()
-      }, tableName)
+      })
     } else {
       tableStore.current.rows = tableStore[tableName]!
       sidebarStore.getFilters(tableStore.current)

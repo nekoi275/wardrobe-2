@@ -29,83 +29,54 @@ export const useApiStore = defineStore('api', () => {
       }
     })
   }
-  function get(callback: (response: any) => void, category: string) {
-    fetch(`${baseUrl}?category=${category}`, requestConfig.value)
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
-        }
-      })
-      .then(callback)
-      .catch((error: any) => console.error(error))
+  function get(category: string) {
+    return fetch(`${baseUrl}?category=${category}`, requestConfig.value).then((response) => {
+      if (response.ok) {
+        return response.json()
+      } else {
+        console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
+      }
+    })
   }
-  function getOne(callback: (response: any) => void, category: string, id: string) {
-    fetch(`${baseUrl}?category=${category}&id=${id}`, requestConfig.value)
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
-        }
-      })
-      .then(callback)
-      .catch((error: any) => console.error(error))
-  }
-  function create(callback: (response: any) => void, data: ClothesInfo, category: string) {
-    fetch(`${baseUrl}?category=${category}`, {
+  function create(data: ClothesInfo, category: string) {
+    return fetch(`${baseUrl}?category=${category}`, {
       ...requestConfig.value,
       method: 'POST',
       body: JSON.stringify(data)
+    }).then((response) => {
+      if (response.ok) {
+        return response.json()
+      } else {
+        console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
+      }
     })
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
-        }
-      })
-      .then(callback)
-      .catch((error: any) => console.error(error))
   }
-  function edit(
-    callback: (response: any) => void,
-    data: ClothesInfo,
-    category: string,
-    id: string
-  ) {
-    fetch(`${baseUrl}?category=${category}&id=${id}`, {
+  function edit(data: ClothesInfo, category: string) {
+    return fetch(`${baseUrl}?category=${category}&id=${data.id}`, {
       ...requestConfig.value,
       method: 'PUT',
       body: JSON.stringify(data)
+    }).then((response) => {
+      if (response.ok) {
+        return response.json()
+      } else {
+        console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
+      }
     })
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
-        }
-      })
-      .then(callback)
-      .catch((error: any) => console.error(error))
   }
-  function remove(callback: (response: any) => void, category: string, id: string) {
-    fetch(`${baseUrl}?category=${category}&id=${id}`, {
+  function remove(category: string, id: string) {
+    return fetch(`${baseUrl}?category=${category}&id=${id}`, {
       ...requestConfig.value,
       method: 'DELETE'
+    }).then((response) => {
+      if (response.ok) {
+        return response
+      } else {
+        console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
+      }
     })
-      .then((response) => {
-        if (response.ok) {
-          return response
-        } else {
-          console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
-        }
-      })
-      .then(callback)
-      .catch((error: any) => console.error(error))
   }
-  function getImage(id: string) {
+  function getImageUrl(id: string) {
     return `${baseUrl}image?id=${id}`
   }
   function createImage(data?: Blob) {
@@ -125,18 +96,34 @@ export const useApiStore = defineStore('api', () => {
       return Promise.resolve()
     }
   }
-  function removeImage(url: string) {
-    fetch(url, {
-      ...requestConfig.value,
-      method: 'DELETE'
-    })
-      .then((response) => {
+  function editImage(data?: Blob, url?: string) {
+    if (data) {
+      return fetch(url || `${baseUrl}image`, {
+        ...requestConfig.value,
+        method: 'PUT',
+        body: data
+      }).then((response) => {
         if (response.ok) {
-          return response
+          return response.json()
         } else {
           console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
         }
       })
+    } else {
+      return Promise.resolve()
+    }
+  }
+  function removeImage(url: string) {
+    fetch(url, {
+      ...requestConfig.value,
+      method: 'DELETE'
+    }).then((response) => {
+      if (response.ok) {
+        return response
+      } else {
+        console.error('getting error.Status: ' + response.statusText + ' ' + response.text)
+      }
+    })
   }
 
   return {
@@ -146,12 +133,12 @@ export const useApiStore = defineStore('api', () => {
     isWrongCreds,
     login,
     get,
-    getOne,
     create,
     edit,
     remove,
-    getImage,
+    getImageUrl,
     createImage,
+    editImage,
     removeImage
   }
 })

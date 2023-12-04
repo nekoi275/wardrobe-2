@@ -5,7 +5,9 @@ import { useImageStore } from '@/stores/image'
 import { useApiStore } from '@/stores/api'
 import { useFormStore } from '@/stores/form'
 import type { ClothesInfo } from '@/stores/interfaces'
-
+//TODO: fix form validation
+//TODO: fix image caching
+//TODO: mobile version
 export const useGeneralStore = defineStore('general', () => {
   const imageStore = useImageStore()
   const tableStore = useTableStore()
@@ -17,9 +19,11 @@ export const useGeneralStore = defineStore('general', () => {
     const filteredValues = sidebarStore.applyFilters(tableStore.current.rows)
     tableStore.filtered = filteredValues
   }
-  function openImage(imageUrl: string) {
-    imageStore.imageUrl = imageUrl
-    imageStore.isOpen = true
+  function openImage(imageUrl?: string) {
+    if (imageUrl) {
+      imageStore.imageUrl = imageUrl
+      imageStore.isOpen = true
+    }
   }
   function openForm(row?: ClothesInfo) {
     if (row) {
@@ -31,85 +35,77 @@ export const useGeneralStore = defineStore('general', () => {
       formStore.formData.season = 'any'
     }
   }
+  function create(category: 'clothes' | 'old' | 'accessories') {
+    api.createImage(formStore.imageData).then((response) => {
+      if (response?.id) {
+        formStore.formData.image = api.getImageUrl(response.id)
+      }
+      api.create(formStore.formData, category).then((response) => {
+        tableStore[category]?.push(response)
+        sidebarStore.getFilters(tableStore.current)
+        applyFilters()
+        formStore.isSubmitted = false
+        tableStore.countTotal()
+        formStore.close()
+      })
+    })
+  }
+  function edit(category: 'clothes' | 'old' | 'accessories') {
+    api.editImage(formStore.imageData, formStore.formData.image)?.then((response) => {
+      if (response?.id) {
+        formStore.formData.image = api.getImageUrl(response.id)
+      }
+      api.edit(formStore.formData, category).then((response) => {
+        const index = tableStore[category]?.findIndex((item) => item.id == response.id)!
+        tableStore[category]?.splice(index, 1, response)
+        sidebarStore.getFilters(tableStore.current)
+        applyFilters()
+        formStore.isSubmitted = false
+        formStore.close()
+      })
+    })
+  }
   function submit(category: 'clothes' | 'old' | 'accessories') {
     formStore.isSubmitted = true
     if (formStore.isValid) {
       if (formStore.formData.id) {
-        api.edit(
-          (response) => {
-            const index = tableStore[category]?.findIndex((item) => item.id == response.id)!
-            tableStore[category]?.splice(index, 1, response)
-            sidebarStore.getFilters(tableStore.current)
-            applyFilters()
-            formStore.isSubmitted = false
-            formStore.close()
-          },
-          formStore.formData,
-          category,
-          formStore.formData.id
-        )
+        edit(category)
       } else {
-        api.createImage(formStore.imageData).then((response) => {
-          if (response?.id) {
-            formStore.formData.image = api.getImage(response.id)
-          }
-          api.create(
-            (response) => {
-              tableStore[category]?.push(response)
-              sidebarStore.getFilters(tableStore.current)
-              applyFilters()
-              formStore.isSubmitted = false
-              tableStore.countTotal()
-              formStore.close()
-            },
-            formStore.formData,
-            category
-          )
-        })
+        create(category)
       }
     }
   }
   function remove(category: 'clothes' | 'old' | 'accessories') {
     return (id: string, imageUrl: string) => {
-      api.remove(
-        () => {
-          api.removeImage(imageUrl)
-          api.get((response: any) => {
-            tableStore[category] = [...response]
-            tableStore.current.rows = [...tableStore[category]!.filter((item) => !item.isOld)]
-            sidebarStore.getFilters(tableStore.current)
-            applyFilters()
-            tableStore.countTotal()
-          }, category)
-        },
-        category,
-        id
-      )
+      api.remove(category, id).then(() => {
+        api.removeImage(imageUrl)
+        api.get(category).then((response: any) => {
+          tableStore[category] = [...response]
+          tableStore.current.rows = [...tableStore[category]!.filter((item) => !item.isOld)]
+          sidebarStore.getFilters(tableStore.current)
+          applyFilters()
+          tableStore.countTotal()
+        })
+      })
     }
   }
   function moveToOld(category: 'clothes' | 'accessories') {
     return (row: ClothesInfo) => {
-      api.create(
-        (response) => {
-          api.remove(
-            () => {
-              api.get((response: any) => {
-                tableStore[category] = [...response]
-                tableStore.current.rows = [...tableStore[category]!]
-                sidebarStore.getFilters(tableStore.current)
-                applyFilters()
-                tableStore.countTotal()
-              }, category)
-            },
-            category,
-            row.id!
-          )
-          tableStore.old?.push(response)
-          formStore.close()
-        },
-        row,
-        'old'
-      )
+      const id = row.id!
+      row.id = undefined
+      api.create(row, 'old').then((response) => {
+        api.remove(category, id).then(() => {
+          api.get(category).then((response: any) => {
+            tableStore[category] = [...response]
+            tableStore.current.rows = [...tableStore[category]!]
+            sidebarStore.getFilters(tableStore.current)
+            applyFilters()
+            tableStore.countTotal()
+          })
+        })
+        tableStore.old?.push(response)
+        formStore.close()
+      })
     }
   }
   return { applyFilters, openImage, openForm, submit, remove, moveToOld }

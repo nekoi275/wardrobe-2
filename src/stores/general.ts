@@ -6,7 +6,6 @@ import { useApiStore } from '@/stores/api'
 import { useFormStore } from '@/stores/form'
 import type { ClothesInfo } from '@/stores/interfaces'
 //TODO: fix image caching
-//TODO: mobile version
 export const useGeneralStore = defineStore('general', () => {
   const imageStore = useImageStore()
   const tableStore = useTableStore()

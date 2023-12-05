@@ -4,13 +4,13 @@ const imageStore = useImageStore()
 </script>
 
 <template>
-    <div class="container" v-show="imageStore.isOpen">
-      <div class="overlay" @click="imageStore.close"></div>
-      <div class="modal">
-        <img :src="imageStore.imageUrl" />
-      </div>
+  <div class="container" v-show="imageStore.isOpen">
+    <div class="overlay" @click="imageStore.close"></div>
+    <div class="modal">
+      <img :src="imageStore.imageUrl" />
     </div>
-  </template>
+  </div>
+</template>
 
 <style scoped>
 .container {
@@ -41,10 +41,19 @@ const imageStore = useImageStore()
   width: 600px;
   height: 600px;
 }
-
 img {
   width: 600px;
   height: 600px;
   border-radius: 3px;
+}
+@media (max-width: 800px) {
+  .container .modal {
+    width: 370px;
+    height: 370px;
+  }
+  img {
+    width: 370px;
+    height: 370px;
+  }
 }
 </style>

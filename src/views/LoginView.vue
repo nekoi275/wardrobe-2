@@ -34,9 +34,8 @@ const api = useApiStore()
   left: 0px;
   right: 0px;
   bottom: 0px;
-  background-image: url('@/assets/cloakroom.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
+  background-image: url('@/assets/background.webp');
+  background-size: 200px;
   opacity: 0.5;
 }
 .overlay {

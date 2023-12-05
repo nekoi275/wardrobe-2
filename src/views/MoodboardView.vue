@@ -66,6 +66,7 @@ figure > img {
 }
 input {
   cursor: pointer;
+  width: 200px;
 }
 .ov-icon {
   position: absolute;

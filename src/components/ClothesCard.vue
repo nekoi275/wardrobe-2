@@ -14,7 +14,7 @@ const tableStore = useTableStore()
 <template>
   <div class="card">
     <img v-if="row.image" class="card-image" :src="imageUrl" />
-    <img v-else class="card-image" src="@/assets/default_image.jpg" />
+    <img v-else class="card-image" src="@/assets/default_image.webp" />
     <table>
       <tr v-for="header in tableStore.current.headers" :key="header.name">
         <td>{{ header.displayName }}:</td>
@@ -64,5 +64,4 @@ span {
   margin-left: 10px;
   cursor: pointer;
 }
-
 </style>

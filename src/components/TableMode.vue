@@ -8,50 +8,77 @@ defineProps<{
 
 function setSorting(field: string) {
   if (tableStore.sorting.field == field) {
-    tableStore.sorting = {field: field, isAscending: !tableStore.sorting.isAscending}
+    tableStore.sorting = { field: field, isAscending: !tableStore.sorting.isAscending }
   } else {
-    tableStore.sorting = {field: field, isAscending: true}
+    tableStore.sorting = { field: field, isAscending: true }
   }
   return field
 }
 function sort(field: string) {
-  setSorting(field);
-  tableStore.sort();
+  setSorting(field)
+  tableStore.sort()
 }
 </script>
 
 <template>
-  <table>
-    <thead>
-      <th v-for="header in tableStore.current.headers" :key="header.name" @click="sort(header.name)">
-        <span>
-          {{ header.displayName }}
-        </span>
-        <V-icon v-show="tableStore.sorting.field == header.name && tableStore.sorting.isAscending" name="fa-angle-up" />
-        <V-icon v-show="tableStore.sorting.field == header.name && !tableStore.sorting.isAscending" name="fa-angle-down" />
-      </th>
-      <th class="empty-th">Total: {{ tableStore.totalAmount }}</th>
-    </thead>
-    <tbody>
-      <tr v-for="row in tableStore.filtered" :key="row.id">
-        <td>{{ row.type }}</td>
-        <td :style="{ backgroundColor: row.color }"></td>
-        <td>{{ row.description }}</td>
-        <td>{{ row.price }}</td>
-        <td>{{ row.year }}</td>
-        <td v-if="tableStore.current.headers.some(el => el.name === 'season')">{{ row.season }}</td>
-        <td>
-          <V-icon name="fa-image" @click="$emit('openImage', row.image)" title="Open photo"/>
-          <V-icon name="fa-edit" @click="$emit('openForm', row)" title="Edit entry"/>
-          <V-icon name="fa-trash-alt" @click="$emit('remove', row.id, row.image)" title="Remove entry"/>
-          <V-icon v-if="!isOld" name="fa-share-square" @click="$emit('moveToOld', row)" title="Move entry to old"/>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-container">
+    <table>
+      <thead>
+        <th
+          v-for="header in tableStore.current.headers"
+          :key="header.name"
+          @click="sort(header.name)"
+        >
+          <span>
+            {{ header.displayName }}
+          </span>
+          <V-icon
+            v-show="tableStore.sorting.field == header.name && tableStore.sorting.isAscending"
+            name="fa-angle-up"
+          />
+          <V-icon
+            v-show="tableStore.sorting.field == header.name && !tableStore.sorting.isAscending"
+            name="fa-angle-down"
+          />
+        </th>
+        <th class="empty-th">Total: {{ tableStore.totalAmount }}</th>
+      </thead>
+      <tbody>
+        <tr v-for="row in tableStore.filtered" :key="row.id">
+          <td>{{ row.type }}</td>
+          <td :style="{ backgroundColor: row.color }"></td>
+          <td>{{ row.description }}</td>
+          <td>{{ row.price }}</td>
+          <td>{{ row.year }}</td>
+          <td v-if="tableStore.current.headers.some((el) => el.name === 'season')">
+            {{ row.season }}
+          </td>
+          <td>
+            <V-icon name="fa-image" @click="$emit('openImage', row.image)" title="Open photo" />
+            <V-icon name="fa-edit" @click="$emit('openForm', row)" title="Edit entry" />
+            <V-icon
+              name="fa-trash-alt"
+              @click="$emit('remove', row.id, row.image)"
+              title="Remove entry"
+            />
+            <V-icon
+              v-if="!isOld"
+              name="fa-share-square"
+              @click="$emit('moveToOld', row)"
+              title="Move entry to old"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <style scoped>
+.table-container {
+  padding-left: 35px;
+  overflow-x: auto;
+}
 table {
   width: 100%;
   border-collapse: collapse;
@@ -70,11 +97,9 @@ thead th {
   padding: 15px;
   cursor: pointer;
 }
-
 th.empty-th {
   cursor: default;
 }
-
 tbody tr {
   border-bottom: 1px solid var(--text-light-color);
 }

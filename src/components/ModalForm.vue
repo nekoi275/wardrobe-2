@@ -62,10 +62,15 @@ function fileChange(e: any) {
           >
           </Multi-select>
         </label>
-        <img id="preview" :src="formStore.previewImage" v-show="formStore.previewImage"/>
+        <img id="preview" :src="formStore.previewImage" v-show="formStore.previewImage" />
         <label class="input-label">
           <span>Photo</span>
-          <input type="file" id="fileInput" accept="image/png, image/jpeg, image/webp" @change="fileChange"/>
+          <input
+            type="file"
+            id="fileInput"
+            accept="image/png, image/jpeg, image/webp"
+            @change="fileChange"
+          />
         </label>
         <FormValidationMessage
           :msg="'This field is required'"
@@ -218,5 +223,10 @@ button {
 .multiselect {
   color: var(--text-dark-color);
   padding: 0px;
+}
+@media (max-width: 800px) {
+  .container .modal {
+    width: 370px;
+  }
 }
 </style>

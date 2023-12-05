@@ -5,7 +5,6 @@ import { useImageStore } from '@/stores/image'
 import { useApiStore } from '@/stores/api'
 import { useFormStore } from '@/stores/form'
 import type { ClothesInfo } from '@/stores/interfaces'
-//TODO: fix form validation
 //TODO: fix image caching
 //TODO: mobile version
 export const useGeneralStore = defineStore('general', () => {
@@ -33,6 +32,7 @@ export const useGeneralStore = defineStore('general', () => {
       formStore.isOpen = true
       formStore.formData.year = new Date().getFullYear()
       formStore.formData.season = 'any'
+      formStore.formData.price = 0
     }
   }
   function create(category: 'clothes' | 'old' | 'accessories') {
@@ -53,7 +53,7 @@ export const useGeneralStore = defineStore('general', () => {
   function edit(category: 'clothes' | 'old' | 'accessories') {
     api.editImage(formStore.imageData, formStore.formData.image)?.then((response) => {
       if (response?.id) {
-        formStore.formData.image = api.getImageUrl(response.id)
+        formStore.formData.image = response.id
       }
       api.edit(formStore.formData, category).then((response) => {
         const index = tableStore[category]?.findIndex((item) => item.id == response.id)!
@@ -67,7 +67,7 @@ export const useGeneralStore = defineStore('general', () => {
   }
   function submit(category: 'clothes' | 'old' | 'accessories') {
     formStore.isSubmitted = true
-    if (formStore.isValid) {
+    if (formStore.isValid.type && formStore.isValid.color && formStore.isValid.year) {
       if (formStore.formData.id) {
         edit(category)
       } else {

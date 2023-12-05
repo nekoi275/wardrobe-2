@@ -8,6 +8,7 @@ defineProps<{
   imageUrl: string
 }>()
 const tableStore = useTableStore()
+
 </script>
 
 <template>

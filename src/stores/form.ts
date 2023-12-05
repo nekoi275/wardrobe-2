@@ -10,11 +10,11 @@ export const useFormStore = defineStore('form', () => {
   const imagePalette = ref([])
   const imageData = ref()
   const isValid = computed(() => {
-    return (
-      formData.value.type != '' &&
-      formData.value.year != 0 &&
-      formData.value.color != ''
-    )
+    return {
+      type: formData.value.type != undefined && formData.value.type != '',
+      year: formData.value.year != undefined && formData.value.year != 0,
+      color: formData.value.color != undefined && formData.value.color != ''
+    }
   })
 
   function close() {
@@ -35,7 +35,6 @@ export const useFormStore = defineStore('form', () => {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement
     fileInput.value = ''
   }
-
 
   return { isOpen, formData, isValid, previewImage, isSubmitted, imagePalette, imageData, close }
 })

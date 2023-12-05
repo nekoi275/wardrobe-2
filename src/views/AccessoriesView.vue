@@ -10,7 +10,7 @@ import { useSidebarStore } from '@/stores/sidebar'
 const generalStore = useGeneralStore()
 const sidebarStore = useSidebarStore()
 const removeHandler = generalStore.remove('accessories')
-const moveToOldHandler = generalStore.remove('accessories')
+const moveToOldHandler = generalStore.moveToOld('accessories')
 </script>
 
 <template>
@@ -32,7 +32,7 @@ const moveToOldHandler = generalStore.remove('accessories')
   <button @click="generalStore.openForm()">Add</button>
   <CardsMode
     v-if="sidebarStore.cardsView"
-    @openForm="generalStore.openForm()"
+    @openForm="generalStore.openForm"
     @remove="removeHandler"
     @moveToOld="moveToOldHandler"
     :isOld="false"

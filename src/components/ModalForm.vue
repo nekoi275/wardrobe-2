@@ -30,7 +30,7 @@ function fileChange(e: any) {
       <form>
         <FormValidationMessage
           :msg="'This field is required'"
-          v-show="formStore.formData.type == '' && formStore.isSubmitted"
+          v-show="!formStore.isValid.type && formStore.isSubmitted"
         ></FormValidationMessage>
         <label class="input-label">
           <span>Type</span>
@@ -46,7 +46,7 @@ function fileChange(e: any) {
         </label>
         <FormValidationMessage
           :msg="'This field is required'"
-          v-show="formStore.formData.year == 0 && formStore.isSubmitted"
+          v-show="!formStore.isValid.year && formStore.isSubmitted"
         ></FormValidationMessage>
         <label class="input-label">
           <span>Year</span>
@@ -69,7 +69,7 @@ function fileChange(e: any) {
         </label>
         <FormValidationMessage
           :msg="'This field is required'"
-          v-show="formStore.formData.color == '' && formStore.isSubmitted"
+          v-show="!formStore.isValid.color && formStore.isSubmitted"
         ></FormValidationMessage>
         <fieldset id="colorgroup" class="input-label">
           <span>Color</span>

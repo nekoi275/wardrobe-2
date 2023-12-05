@@ -77,7 +77,7 @@ export const useApiStore = defineStore('api', () => {
     })
   }
   function getImageUrl(id: string) {
-    return `${baseUrl}image?id=${id}`
+    return new URL(`${baseUrl}image?id=${id}`, import.meta.url).href
   }
   function createImage(data?: Blob) {
     if (data) {
@@ -96,9 +96,10 @@ export const useApiStore = defineStore('api', () => {
       return Promise.resolve()
     }
   }
-  function editImage(data?: Blob, url?: string) {
+  function editImage(data?: Blob, id?: string) {
     if (data) {
-      return fetch(url || `${baseUrl}image`, {
+      const url = id ? `${baseUrl}image?id=${id}` : `${baseUrl}image`
+      return fetch(url, {
         ...requestConfig.value,
         method: 'PUT',
         body: data

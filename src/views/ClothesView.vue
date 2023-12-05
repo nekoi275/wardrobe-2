@@ -10,7 +10,7 @@ import { useSidebarStore } from '@/stores/sidebar'
 const generalStore = useGeneralStore()
 const sidebarStore = useSidebarStore()
 const removeHandler = generalStore.remove('clothes')
-const moveToOldHandler = generalStore.remove('clothes')
+const moveToOldHandler = generalStore.moveToOld('clothes')
 </script>
 
 <template>

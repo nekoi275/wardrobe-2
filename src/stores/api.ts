@@ -77,7 +77,7 @@ export const useApiStore = defineStore('api', () => {
     })
   }
   function getImageUrl(id: string) {
-    return new URL(`${baseUrl}image?id=${id}`, import.meta.url).href
+    return new URL(`${baseUrl}image?id=${id}&t=${new Date().getTime()}`, import.meta.url).href
   }
   function createImage(data?: Blob) {
     if (data) {

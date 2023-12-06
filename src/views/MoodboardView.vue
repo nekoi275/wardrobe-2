@@ -36,7 +36,8 @@ function removeImage(id: string) {
   <div class="moodboard-container">
     <figure v-for="image in moodboardStore.images" :key="image">
       <img :src="api.getImageUrl(image)" />
-      <V-icon name="fa-trash-alt" @click="removeImage(image)" />
+      <!-- <V-icon name="fa-trash-alt" @click="removeImage(image)" /> -->
+      <div class="ov-icon"></div>
     </figure>
   </div>
 </template>
@@ -76,6 +77,9 @@ input {
   right: 5px;
   justify-self: end;
   color: var(--main-dark-color);
+  background-color: black;
+  width: 10px;
+  height: 10px;
 }
 button {
   margin-left: 30px;

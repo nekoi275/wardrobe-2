@@ -34,4 +34,9 @@ defineProps<{
   align-items: center;
   justify-content: center;
 }
+@media (max-width: 800px) {
+  .cards-container {
+    padding-left: 40px;
+  }
+}
 </style>

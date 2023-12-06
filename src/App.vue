@@ -45,4 +45,9 @@ a.router-link-active.router-link-exact-active {
 nav a:hover {
   color: var(--main-dark-color);
 }
+@media (max-width: 800px) {
+  nav a {
+    padding: 0 5px;
+  }
+}
 </style>

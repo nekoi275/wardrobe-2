@@ -226,7 +226,9 @@ button {
 }
 @media (max-width: 800px) {
   .container .modal {
-    width: 370px;
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
   }
 }
 </style>

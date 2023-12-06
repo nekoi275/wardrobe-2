@@ -45,6 +45,9 @@ router.beforeEach((to) => {
   const tableStore = useTableStore()
   const sidebarStore = useSidebarStore()
   const moodboardStore = useMoodboardStore()
+  if (localStorage.getItem('wardrobe-user') && localStorage.getItem('wardrobe-pass')) {
+    api.isLoggedIn = true
+  }
   if (!api.isLoggedIn && to.name !== 'login') {
     return { name: 'login' }
   }

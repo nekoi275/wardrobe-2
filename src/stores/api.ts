@@ -12,15 +12,21 @@ export const useApiStore = defineStore('api', () => {
   const requestConfig = computed(() => {
     return {
       headers: {
-        Authorization: `Basic ${btoa(`${userName.value}:${password.value}`)}`
+        Authorization: `Basic ${btoa(
+          `${userName.value || localStorage.getItem('wardrobe-user')}:${
+            password.value || localStorage.getItem('wardrobe-pass')
+          }`
+        )}`
       }
     }
   })
   function login() {
-    return fetch(`${baseUrl}?category=clothes`, requestConfig.value).then((response) => {
-      if (response.ok) {
+    return fetch(baseUrl, requestConfig.value).then((response) => {
+      if (response.status !== 401) {
         isLoggedIn.value = true
         isWrongCreds.value = false
+        localStorage.setItem('wardrobe-user', userName.value)
+        localStorage.setItem('wardrobe-pass', password.value)
         router.push('/clothes')
         return `Successfully logged in`
       } else {

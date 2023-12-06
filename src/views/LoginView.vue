@@ -5,11 +5,11 @@ import FormValidationMessage from '@/components/FormValidationMessage.vue'
 const api = useApiStore()
 </script>
 
-<template>
+<template v-if="!api.isLoggedIn">
   <div class="overlay"></div>
   <div class="background"></div>
   <div class="container">
-    <form v-if="!api.isLoggedIn">
+    <form>
       <FormValidationMessage
         :msg="'Wrong credentials'"
         v-show="api.isWrongCreds"

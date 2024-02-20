@@ -27,7 +27,7 @@ export const useApiStore = defineStore('api', () => {
         isWrongCreds.value = false
         localStorage.setItem('wardrobe-user', userName.value)
         localStorage.setItem('wardrobe-pass', password.value)
-        router.push('/clothes')
+        router.push('/')
         return `Successfully logged in`
       } else {
         isWrongCreds.value = true

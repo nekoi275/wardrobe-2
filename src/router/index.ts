@@ -4,6 +4,7 @@ import AccessoriesView from '../views/AccessoriesView.vue'
 import OldView from '../views/OldView.vue'
 import MoodboardView from '../views/MoodboardView.vue'
 import LoginView from '../views/LoginView.vue'
+import MainView from '../views/MainView.vue'
 import { useTableStore } from '@/stores/table'
 import { useApiStore } from '@/stores/api'
 import { useSidebarStore } from '@/stores/sidebar'
@@ -13,9 +14,14 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/login',
       name: 'login',
       component: LoginView
+    },
+    {
+      path: '/',
+      name: 'main',
+      component: MainView
     },
     {
       path: '/clothes',
@@ -50,6 +56,9 @@ router.beforeEach((to) => {
   }
   if (!api.isLoggedIn && to.name !== 'login') {
     return { name: 'login' }
+  }
+  if (api.isLoggedIn && to.name == 'login') {
+    return { name: 'main' }
   }
   if (to.name === 'clothes' || to.name === 'accessories' || to.name === 'old') {
     const tableName = to.name

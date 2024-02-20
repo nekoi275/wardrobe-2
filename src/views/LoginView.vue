@@ -5,7 +5,7 @@ import FormValidationMessage from '@/components/FormValidationMessage.vue'
 const api = useApiStore()
 </script>
 
-<template v-if="!api.isLoggedIn">
+<template>
   <div class="overlay"></div>
   <div class="background"></div>
   <div class="container">
